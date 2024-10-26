@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from datetime import DateTime
+from datetime import datetime
 
 # Esquema para la creación de registros de pasos diarios
 class DailyStepsCreate(BaseModel):
@@ -8,7 +8,7 @@ class DailyStepsCreate(BaseModel):
 
 # Esquema para la respuesta de registros de pasos diarios
 class DailyStepsOut(BaseModel):
-    date: DateTime
+    date: datetime
     steps_amount: int
 
     class Config:

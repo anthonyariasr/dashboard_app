@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from datetime import DateTime
+from datetime import datetime
 
 # Esquema para la creación de registros de porcentaje de grasa corporal
 class BodyFatPercentageCreate(BaseModel):
@@ -8,7 +8,7 @@ class BodyFatPercentageCreate(BaseModel):
 
 # Esquema para la respuesta de registros de porcentaje de grasa corporal
 class BodyFatPercentageOut(BaseModel):
-    date: DateTime
+    date: datetime
     fat_percentage: float
 
     class Config:

@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from datetime import DateTime
+from datetime import datetime
 
 # Esquema para la creación de registros de altura
 class HeightCreate(BaseModel):
@@ -8,7 +8,7 @@ class HeightCreate(BaseModel):
 
 # Esquema para la respuesta de registros de altura
 class HeightOut(BaseModel):
-    date: DateTime
+    date: datetime
     height: float
 
     class Config:

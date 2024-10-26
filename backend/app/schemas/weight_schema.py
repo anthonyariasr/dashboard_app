@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from datetime import DateTime
+from datetime import datetime
 
 # Esquema para la creación de registros de peso
 class WeightCreate(BaseModel):
@@ -8,7 +8,7 @@ class WeightCreate(BaseModel):
 
 # Esquema para la respuesta de registros de peso
 class WeightOut(BaseModel):
-    date: DateTime
+    date: datetime
     weight: float
 
     class Config:

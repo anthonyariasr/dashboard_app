@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from datetime import DateTime
+from datetime import datetime
 
 # Esquema para la creación de registros de ejercicio
 class ExerciseCreate(BaseModel):
@@ -9,7 +9,7 @@ class ExerciseCreate(BaseModel):
 
 # Esquema para la respuesta de registros de ejercicio
 class ExerciseOut(BaseModel):
-    date: DateTime
+    date: datetime
     exercise_name: str
     duration: float
 

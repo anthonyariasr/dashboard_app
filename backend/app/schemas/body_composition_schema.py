@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from datetime import DateTime
+from datetime import datetime
 
 # Esquema para la creación de registros de composición corporal
 class BodyCompositionCreate(BaseModel):
@@ -10,7 +10,7 @@ class BodyCompositionCreate(BaseModel):
 
 # Esquema para la respuesta de registros de composición corporal
 class BodyCompositionOut(BaseModel):
-    date: DateTime
+    date: datetime
     fat: float
     muscle: float
     water: float

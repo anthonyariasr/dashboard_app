@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from datetime import DateTime
+from datetime import datetime
 
 # Esquema para la creación de registros de consumo de agua
 class WaterConsumptionCreate(BaseModel):
@@ -8,7 +8,7 @@ class WaterConsumptionCreate(BaseModel):
 
 # Esquema para la respuesta de registros de consumo de agua
 class WaterConsumptionOut(BaseModel):
-    date: DateTime
+    date: datetime
     water_amount: float
 
     class Config:
