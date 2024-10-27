@@ -10,4 +10,6 @@ Base.metadata.create_all(bind=engine)
 
 # Incluir los routers para organizar las rutas
 app.include_router(users.router)
+app.include_router(auth.router)
+#app.include_router(data.router)
 

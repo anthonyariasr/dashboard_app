@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 from datetime import date
 
 # Esquema para la creación de un usuario
@@ -14,8 +15,22 @@ class UserOut(BaseModel):
     id: int
     email: str
     username: str
-    birthday: date 
+    birthday: date
     gender: str
 
     class Config:
         orm_mode = True
+
+# Esquema para el login del usuario
+class UserLogin(BaseModel):
+    username: str
+    password: str
+
+
+# Esquema para la actualización de un usuario
+class UserUpdate(BaseModel):
+    email: Optional[str] = None
+    username: Optional[str] = None
+    password: Optional[str] = None
+    birthday: Optional[str] = None
+    gender: Optional[str] = None
