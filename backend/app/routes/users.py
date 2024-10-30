@@ -4,11 +4,13 @@ from database import get_db
 from models.user import User
 from schemas.user_schema import UserCreate, UserOut, UserUpdate
 from typing import List
+from datetime import datetime
 
 router = APIRouter(
     prefix="/users",
     tags=["users"]
 )
+
 
 # Ruta para crear un nuevo usuario
 @router.post("/create", response_model=UserOut)
@@ -16,11 +18,18 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.email == user.email).first()
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
+    
+    # Convertir el string de 'birthday' a un objeto 'date' de Python con formato d-m-aaaa
+    try:
+        birthday_date = datetime.strptime(user.birthday, "%d-%m-%Y").date()  # Ajustado a d-m-aaaa
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid date format. Use DD-MM-YYYY.")
+    
     new_user = User(
         email=user.email,
         username=user.username,
-        password=user.password,  # Para este ejercicio, no se encripta
-        birthday=user.birthday,
+        password=user.password,
+        birthday=birthday_date,
         gender=user.gender
     )
     db.add(new_user)
@@ -56,7 +65,11 @@ def update_user(user_id: int, user_update: UserUpdate, db: Session = Depends(get
     if user_update.password is not None:
         user.password = user_update.password
     if user_update.birthday is not None:
-        user.birthday = user_update.birthday
+        # Convertir el string de 'birthday' a un objeto 'date' de Python con formato d-m-aaaa
+        try:
+            user.birthday = datetime.strptime(user_update.birthday, "%d-%m-%Y").date()  # Ajustado a d-m-aaaa
+        except ValueError:
+            raise HTTPException(status_code=400, detail="Invalid date format. Use DD-MM-YYYY.")
     if user_update.gender is not None:
         user.gender = user_update.gender
 
