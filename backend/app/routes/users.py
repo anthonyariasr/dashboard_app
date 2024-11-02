@@ -48,10 +48,10 @@ def create_user(
 
     # Convertir las fechas de altura y peso en objetos datetime
     try:
-        height_date = datetime.strptime(height.date, "%d/%m/%Y %H:%M:%S")
-        weight_date = datetime.strptime(weight.date, "%d/%m/%Y %H:%M:%S")
+        height_date = datetime.strptime(height.date, "%Y/%m/%d %H:%M:%S")
+        weight_date = datetime.strptime(weight.date, "%Y/%m/%d %H:%M:%S")
     except ValueError:
-        raise HTTPException(status_code=400, detail="Invalid date format for height or weight. Use DD/MM/YYYY HH:MM:SS.")
+        raise HTTPException(status_code=400, detail="Invalid date format for height or weight. Use YYYY/MM/DD HH:MM:SS.")
 
     # Insertar el registro inicial de altura en la tabla Height
     new_height = Height(

@@ -6,7 +6,8 @@
 __pycache__/
 *.py[cod]
 *$py.class
-user_database.db
+/backend/user_database.db
+
 
 # C extensions
 *.so
