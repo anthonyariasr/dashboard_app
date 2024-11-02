@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function LoginForm() {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({ username: '', password: '' });
     const [error, setError] = useState('');
 
@@ -14,6 +16,7 @@ function LoginForm() {
         try {
             const response = await axios.post('http://localhost:8000/auth/login', formData);
             console.log('Login successful:', response.data);
+            navigate('/Dashboard')
         } catch (error) {
             setError('Login failed. Please check your credentials and try again.');
             console.error('Error during login:', error);
