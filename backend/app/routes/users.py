@@ -2,7 +2,11 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from database import get_db
 from models.user import User
+from models.height import Height
+from models.weight import Weight
 from schemas.user_schema import UserCreate, UserOut, UserUpdate
+from schemas.height_schema import HeightCreate
+from schemas.weight_schema import WeightCreate
 from typing import List
 from datetime import datetime
 
@@ -12,19 +16,25 @@ router = APIRouter(
 )
 
 
-# Ruta para crear un nuevo usuario
 @router.post("/create", response_model=UserOut)
-def create_user(user: UserCreate, db: Session = Depends(get_db)):
+def create_user(
+    user: UserCreate, 
+    height: HeightCreate, 
+    weight: WeightCreate, 
+    db: Session = Depends(get_db)
+):
+    # Verificar si el usuario ya existe
     db_user = db.query(User).filter(User.email == user.email).first()
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
     
-    # Convertir el string de 'birthday' a un objeto 'date' de Python con formato d-m-aaaa
+    # Convertir la fecha de nacimiento (birthday) a un objeto date de Python
     try:
-        birthday_date = datetime.strptime(user.birthday, "%d-%m-%Y").date()  # Ajustado a d-m-aaaa
+        birthday_date = datetime.strptime(user.birthday, "%d-%m-%Y").date()
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid date format. Use DD-MM-YYYY.")
     
+    # Crear el nuevo usuario
     new_user = User(
         email=user.email,
         username=user.username,
@@ -34,7 +44,34 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     )
     db.add(new_user)
     db.commit()
-    db.refresh(new_user)
+    db.refresh(new_user)  # Obtener el ID del usuario recién creado
+
+    # Convertir las fechas de altura y peso en objetos datetime
+    try:
+        height_date = datetime.strptime(height.date, "%d/%m/%Y %H:%M:%S")
+        weight_date = datetime.strptime(weight.date, "%d/%m/%Y %H:%M:%S")
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid date format for height or weight. Use DD/MM/YYYY HH:MM:SS.")
+
+    # Insertar el registro inicial de altura en la tabla Height
+    new_height = Height(
+        user_id=new_user.id,
+        date=height_date,
+        height=height.height
+    )
+    db.add(new_height)
+
+    # Insertar el registro inicial de peso en la tabla Weight
+    new_weight = Weight(
+        user_id=new_user.id,
+        date=weight_date,
+        weight=weight.weight
+    )
+    db.add(new_weight)
+
+    # Confirmar las transacciones en la base de datos
+    db.commit()
+    
     return new_user
 
 # Ruta para obtener todos los usuarios
