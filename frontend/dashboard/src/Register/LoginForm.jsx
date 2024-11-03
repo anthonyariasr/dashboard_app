@@ -15,13 +15,26 @@ function LoginForm() {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:8000/auth/login', formData);
-            console.log('Login successful:', response.data);
-            navigate('/Dashboard')
+            const userName = formData.username; // O puedes obtenerlo del response si viene del backend
+            const weight = response.data.weight; // Obtiene el peso del response
+            const height = response.data.height; // Obtiene la altura del response
+            console.log(weight);
+            console.log(height)
+            
+            
+            localStorage.setItem('userName', userName); // Guarda el nombre de usuario en localStorage
+            localStorage.setItem('access_token', response.data.access_token); // Guarda el token
+            localStorage.setItem('weight', weight); // Guarda el peso
+            localStorage.setItem('height', height); // Guarda la altura
+    
+            navigate('/Dashboard');
         } catch (error) {
             setError('Login failed. Please check your credentials and try again.');
             console.error('Error during login:', error);
         }
     };
+    
+    
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100">

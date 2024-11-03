@@ -1,12 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+const Sidebar = ({ onUpdateProfile, onLogout }) => {
+    const navigate = useNavigate();
+    const [userName, setUserName] = useState('');
 
-const Sidebar = ({ userName, onUpdateProfile, onLogout }) => {
-  const [showAddDataOptions, setShowAddDataOptions] = useState(false);
+    useEffect(() => {
+        // Obtén el nombre de usuario del localStorage
+        const storedUserName = localStorage.getItem('userName');
+        if (storedUserName) {
+            setUserName(storedUserName);
+        }
+    }, []);
 
-  const toggleAddDataOptions = () => {
-    setShowAddDataOptions(!showAddDataOptions);
-  };
-
+    const handleLogout = () => {
+        localStorage.removeItem('userName');
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('height');
+        localStorage.removeItem('weight');
+        navigate('/LoginForm')
+    };
+    
   return (
     <div className="w-64 h-screen bg-gray-800 text-white flex-col">
       <div className="p-6 border-b border-gray-700">
@@ -22,55 +35,13 @@ const Sidebar = ({ userName, onUpdateProfile, onLogout }) => {
           </button>
         </li>
         <li>
-          <button
-            onClick={toggleAddDataOptions}
-            className="w-full text-left py-2 px-4 hover:bg-gray-700 rounded-md"
-          >
+          <button className="w-full text-left py-2 px-4 hover:bg-gray-700 rounded-md"> 
             Añadir datos
           </button>
-          {showAddDataOptions && (
-            <ul className="ml-4 mt-2 space-y-2">
-              <li>
-                <button className="w-full text-left py-1 px-4 hover:bg-gray-700 rounded-md">
-                  Añadir peso
-                </button>
-              </li>
-              <li>
-                <button className="w-full text-left py-1 px-4 hover:bg-gray-700 rounded-md">
-                  Añadir altura
-                </button>
-              </li>
-              <li>
-                <button className="w-full text-left py-1 px-4 hover:bg-gray-700 rounded-md">
-                  Añadir composición corporal
-                </button>
-              </li>
-              <li>
-                <button className="w-full text-left py-1 px-4 hover:bg-gray-700 rounded-md">
-                  Añadir porcentaje de grasa corporal
-                </button>
-              </li>
-              <li>
-                <button className="w-full text-left py-1 px-4 hover:bg-gray-700 rounded-md">
-                  Añadir cantidad de vasos de agua
-                </button>
-              </li>
-              <li>
-                <button className="w-full text-left py-1 px-4 hover:bg-gray-700 rounded-md">
-                  Añadir pasos diarios
-                </button>
-              </li>
-              <li>
-                <button className="w-full text-left py-1 px-4 hover:bg-gray-700 rounded-md">
-                  Añadir ejercicios realizados
-                </button>
-              </li>
-            </ul>
-          )}
-        </li>
+          </li>
         <li>
           <button
-            onClick={onLogout}
+            onClick={handleLogout}
             className="w-full text-left py-2 px-4 hover:bg-red-600 rounded-md"
           >
             Cerrar sesión
