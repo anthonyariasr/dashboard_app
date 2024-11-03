@@ -7,14 +7,14 @@ from starlette import status
 from datetime import datetime, timedelta
 from database import get_db
 from typing import Any
-import csv
+import pandas as pd
 
 router = APIRouter(
     prefix="/data",
     tags=["data"]
 )
 
-#Ruta para subir los archivos .csv
+# Mapeo de tipos de sensores y sus campos
 sensor_mapping = {
     "weight": (Weight, {"weight": float}),
     "water_consumption": (WaterConsumption, {"water_amount": float}),
@@ -25,32 +25,48 @@ sensor_mapping = {
     "body_composition": (BodyComposition, {"fat": float, "muscle": float, "water": float})
 }
 
+# Mapeo de nombres de columnas del CSV a los nombres en los modelos
+csv_to_model_fields = {
+    "weight": {"weight": "weight"},
+    "water_consumption": {"waterAmount": "water_amount"},
+    "height": {"height": "height"},
+    "exercise": {"exerciseName": "exercise_name", "duration": "duration"},
+    "daily_step": {"stepsAmount": "steps_amount"},
+    "body_fat_percentage": {"fatPercentage": "fat_percentage"},
+    "body_composition": {"fat": "fat", "muscle": "muscle", "water": "water"}
+}
+
 @router.post("/add-sensor", response_model=Any)
 def add_sensor(type_sensor: str, userId: int, file: UploadFile = File(...), db: Session = Depends(get_db)):
-    try:
-        contents = file.file.read().decode("utf-8")
-        csv_reader = csv.DictReader(StringIO(contents))
-    except Exception:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid CSV format")
-
     if type_sensor not in sensor_mapping:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid type_sensor provided")
     
     model_class, field_types = sensor_mapping[type_sensor]
+    field_mappings = csv_to_model_fields.get(type_sensor, {})
 
-    for row in csv_reader:
-        try:
-            row_date = datetime.strptime(row["date"], "%Y-%m-%d %H:%M:%S")
-        except ValueError:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid date format. Use YYYY-MM-DD HH:MM:SS")
-        
-        # Crea el diccionario de datos con los valores convertidos
-        data = {"date": row_date, "user_id": userId}
+    try:
+        # Leer el archivo CSV con pandas
+        contents = file.file.read().decode("utf-8")
+        df = pd.read_csv(StringIO(contents))
+
+        # Renombrar las columnas del DataFrame para que coincidan con los campos del modelo
+        df = df.rename(columns=field_mappings)
+
+        # Convertir la columna de fecha y validar el formato
+        df['date'] = pd.to_datetime(df['date'], format="%Y-%m-%d %H:%M:%S", errors='raise')
+    except ValueError:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid date format. Use YYYY-MM-DD HH:MM:SS")
+    except Exception:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid CSV format")
+
+    # Recorrer cada fila y agregar al modelo
+    for _, row in df.iterrows():
+        data = {"date": row["date"], "user_id": userId}
         for field, field_type in field_types.items():
             try:
                 data[field] = field_type(row[field])
-            except (ValueError, KeyError):
-                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Invalid or missing data for {field}")
+            except KeyError:
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Missing data for {field}")
         
         data_entry = model_class(**data)
         db.add(data_entry)
