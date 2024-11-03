@@ -237,7 +237,6 @@ def get_historical_data(
     # Agrupar ejercicios por nombre y sumar la duración total por tipo de ejercicio en el período de tiempo
     exercises = db.query(
         Exercise.exercise_name,
-        func.count(Exercise.exercise_name).label("exercise_count"),
         func.sum(Exercise.duration).label("total_duration")
     ).filter(
         Exercise.user_id == userId,
@@ -247,7 +246,6 @@ def get_historical_data(
     exercises_data = [
         {
             "exercise_name": exercise.exercise_name,
-            "count": exercise.exercise_count,
             "total_duration": exercise.total_duration
         } for exercise in exercises
     ]
