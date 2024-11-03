@@ -45,7 +45,7 @@ def add_sensor(type_sensor: str, userId: int, file: UploadFile = File(...), db: 
     field_mappings = csv_to_model_fields.get(type_sensor, {})
 
     try:
-        # Leer el archivo CSV con pandas
+        # Lee archivo CSV con pandas
         contents = file.file.read().decode("utf-8")
         df = pd.read_csv(StringIO(contents))
 
@@ -149,7 +149,118 @@ def generalView(userId: int, db: Session = Depends(get_db)):
 
     return result
 
-"""
-AGREGAR ENDPOINT DE GET DATA
-FALTA REVISAR EL TEMA DE LOS QUERYS
-"""
+#Ruta para obtener el historico de datos
+@router.get("/historical-data")
+def get_historical_data(
+    userId: int,
+    time_period: str,
+    db: Session = Depends(get_db)
+):
+    # Calcular la fecha de inicio basada en el período de tiempo
+    end_date = datetime.now()
+    
+    if time_period == "1_week":
+        start_date = end_date - timedelta(weeks=1)
+    elif time_period == "1_month":
+        start_date = end_date - timedelta(days=30)
+    elif time_period == "3_months":
+        start_date = end_date - timedelta(days=90)
+    elif time_period == "6_months":
+        start_date = end_date - timedelta(days=180)
+    elif time_period == "1_year":
+        start_date = end_date - timedelta(days=365)
+    else:
+        raise HTTPException(status_code=400, detail="Invalid time_period provided")
+
+    # Obtener el promedio, máximo y mínimo de weight en el período de tiempo
+    weight = db.query(func.avg(Weight.weight).label("average_weight"), func.min(Weight.weight).label("min_weight"), func.max(Weight.weight).label("max_weight")).filter(
+        Weight.user_id == userId,
+        Weight.date >= start_date,
+        Weight.date <= end_date
+    ).first()
+    weight_data = {
+        "average": weight.average_weight or "No data",
+        "min": weight.min_weight or "No data",
+        "max": weight.max_weight or "No data"
+    }
+
+    # Obtener el promedio, máximo y mínimo de height en el período de tiempo
+    height = db.query(func.avg(Height.height).label("average_height"), func.min(Height.height).label("min_height"), func.max(Height.height).label("max_height")).filter(
+        Height.user_id == userId,
+        Height.date >= start_date,
+        Height.date <= end_date
+    ).first()
+    height_data = {
+        "average": height.average_height or "No data",
+        "min": height.min_height or "No data",
+        "max": height.max_height or "No data"
+    }
+
+    # Promedio de BodyComposition (fat, muscle, water) en el período de tiempo
+    body_composition = db.query(
+        func.avg(BodyComposition.fat).label("average_fat"),
+        func.avg(BodyComposition.muscle).label("average_muscle"),
+        func.avg(BodyComposition.water).label("average_water")
+    ).filter(
+        BodyComposition.user_id == userId,
+        BodyComposition.date >= start_date,
+        BodyComposition.date <= end_date
+    ).first()
+    body_composition_data = {
+        "average_fat": f"{body_composition.average_fat:.2f}%" if body_composition.average_fat else "0%",
+        "average_muscle": f"{body_composition.average_muscle:.2f}%" if body_composition.average_muscle else "0%",
+        "average_water": f"{body_composition.average_water:.2f}%" if body_composition.average_water else "0%"
+    }
+
+    # Promedio de BodyFatPercentage en el período de tiempo
+    body_fat_percentage = db.query(func.avg(BodyFatPercentage.fat_percentage).label("average_fat_percentage")).filter(
+        BodyFatPercentage.user_id == userId,
+        BodyFatPercentage.date >= start_date,
+        BodyFatPercentage.date <= end_date
+    ).first()
+    body_fat_percentage_data = f"{body_fat_percentage.average_fat_percentage:.2f}%" if body_fat_percentage.average_fat_percentage else "0%"
+
+    # Sumar el consumo total de agua (WaterConsumption) en el período de tiempo
+    total_water_consumption = db.query(func.sum(WaterConsumption.water_amount).label("total_water")).filter(
+        WaterConsumption.user_id == userId,
+        WaterConsumption.date >= start_date,
+        WaterConsumption.date <= end_date
+    ).scalar() or 0
+
+    # Sumar todos los pasos (DailyStep) en el período de tiempo
+    total_daily_steps = db.query(func.sum(DailyStep.steps_amount).label("total_steps")).filter(
+        DailyStep.user_id == userId,
+        DailyStep.date >= start_date,
+        DailyStep.date <= end_date
+    ).scalar() or 0
+
+    # Agrupar ejercicios por nombre y sumar la duración total por tipo de ejercicio en el período de tiempo
+    exercises = db.query(
+        Exercise.exercise_name,
+        func.count(Exercise.exercise_name).label("exercise_count"),
+        func.sum(Exercise.duration).label("total_duration")
+    ).filter(
+        Exercise.user_id == userId,
+        Exercise.date >= start_date,
+        Exercise.date <= end_date
+    ).group_by(Exercise.exercise_name).all()
+    exercises_data = [
+        {
+            "exercise_name": exercise.exercise_name,
+            "count": exercise.exercise_count,
+            "total_duration": exercise.total_duration
+        } for exercise in exercises
+    ]
+
+    # Preparar el resultado
+    result = {
+        "weight": weight_data,
+        "height": height_data,
+        "body_composition": body_composition_data,
+        "body_fat_percentage": body_fat_percentage_data,
+        "total_water_consumption": total_water_consumption,
+        "total_daily_steps": total_daily_steps,
+        "exercises": exercises_data
+    }
+
+    return result
