@@ -19,7 +19,7 @@ function LoginForm() {
             const weight = response.data.weight; // Obtiene el peso del response
             const height = response.data.height; // Obtiene la altura del response
             console.log(weight);
-            console.log(height)
+            console.log(height);
             
             
             localStorage.setItem('userName', userName); // Guarda el nombre de usuario en localStorage

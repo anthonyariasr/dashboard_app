@@ -8,6 +8,8 @@ import RegisterForm from './Register/RegisterForm';
 import UserProfile from './Register/UserProfile';
 import Dashboard from './PrincipalDashboard/Dashboard';
 import Sidebar from './SideBar/Sidebar';
+import FormData from './FormData/FormData';
+import UpdateProfile from './FormData/UpdateProfile';
 
 const router = createBrowserRouter([
   {
@@ -35,6 +37,14 @@ const router = createBrowserRouter([
   {
     path: "Sidebar",
     element: <Sidebar/>
+  },
+  {
+    path: "FormData",
+    element: <FormData/>
+  },
+  {
+    path: "UpdateForm",
+    element: <UpdateProfile/>
   }
 
 ])
