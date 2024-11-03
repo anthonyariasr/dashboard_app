@@ -35,7 +35,7 @@ def login(user: UserLogin, response: Response, db: Session = Depends(get_db)):
 
     return {
         "message": "Login successful",
-        "User id": db_user.id,
+        "userId": db_user.id,
         "weight": user_weight.weight,  # Asegúrate de que el campo es el correcto
         "height": user_height.height  # Asegúrate de que el campo es el correcto
     }
