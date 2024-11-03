@@ -6,7 +6,7 @@ export default function BasicGauges() {
   return (
         <div>
             <h3>Steps</h3>
-            <Gauge width={100} height={100} value={60} startAngle={-90} endAngle={90} />
+            <Gauge width={100} height={100} value={0} startAngle={-90} endAngle={90} />
         </div>
   );
 }

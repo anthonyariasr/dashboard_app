@@ -6,7 +6,7 @@ export default function ChartsOverviewDemo() {
   const settings = {
     width: 200,
     height: 200,
-    value: 60,
+    value: 0,
   };
   return (
     <div>

@@ -19,7 +19,18 @@ const Sidebar = ({ onUpdateProfile, onLogout }) => {
         localStorage.removeItem('weight');
         navigate('/LoginForm')
     };
-    
+
+    const handleForm =()=>{
+        navigate('/FormData')
+    }
+
+    const handleDashboard=()=>{
+        navigate('/Dashboard')
+    }
+
+    const handleUpdateProfile =()=>{
+        navigate('/UpdateForm')
+    }    
   return (
     <div className="w-64 h-screen bg-gray-800 text-white flex-col">
       <div className="p-6 border-b border-gray-700">
@@ -28,14 +39,24 @@ const Sidebar = ({ onUpdateProfile, onLogout }) => {
       <ul className="flex-grow p-4 space-y-4">
         <li>
           <button
-            onClick={onUpdateProfile}
+            onClick={handleDashboard}
+            className="w-full text-left py-2 px-4 hover:bg-gray-700 rounded-md"
+          >
+            Dashboard
+          </button>
+        </li>
+        <li>
+          <button
+            onClick={handleUpdateProfile}
             className="w-full text-left py-2 px-4 hover:bg-gray-700 rounded-md"
           >
             Actualizar perfil
           </button>
         </li>
         <li>
-          <button className="w-full text-left py-2 px-4 hover:bg-gray-700 rounded-md"> 
+          <button 
+          onClick={handleForm}
+          className="w-full text-left py-2 px-4 hover:bg-gray-700 rounded-md"> 
             Añadir datos
           </button>
           </li>
