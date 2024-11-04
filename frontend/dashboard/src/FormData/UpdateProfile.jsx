@@ -63,7 +63,12 @@ export default function UpdateUserForm() {
 
             const data = await response.json();
             console.log("User updated successfully:", data);
+            const userName = data.username
+            localStorage.setItem('userName', userName);
             setSuccessMessage("Perfil actualizado con éxito");
+
+            window.location.reload();
+            
         } catch (error) {
             console.error("Error:", error);
             setErrorMessage("Error al actualizar el perfil: " + error.message);
