@@ -3,6 +3,9 @@ import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
 import './Dashborad.css';
 
 export default function ChartsOverviewDemo({values}) {
+  if(values > 100){
+    values = 100;
+  }
   const settings = {
     width: 200,
     height: 200,

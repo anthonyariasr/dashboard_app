@@ -6,6 +6,7 @@ function UploadSensorData() {
   const [typeSensor, setTypeSensor] = useState('');
   const [userId, setUserId] = useState('');
   const [errorMessage, setErrorMessage] = useState(''); // Nuevo estado para el mensaje de error
+  const [succesMessage, setSuccessMessage] = useState('');
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
@@ -36,7 +37,7 @@ function UploadSensorData() {
       }
 
       const result = await response.json();
-      alert(result.status || '¡Archivo subido con éxito!');
+      setSuccessMessage('Archivo subido con éxito')
     } catch (error) {
       console.error('Error al subir el archivo:', error);
       setErrorMessage('Error al subir el archivo. Verifica el formato e inténtalo nuevamente.');
@@ -54,6 +55,13 @@ function UploadSensorData() {
           {errorMessage && (
             <div className="mb-4 p-3 bg-red-100 text-red-700 border border-red-400 rounded">
               {errorMessage}
+            </div>
+          )}
+
+          {/* Mostrar mensaje de error si existe */}
+          {succesMessage && (
+            <div className="mb-4 p-3 bg-green-100 text-green-700 border border-green-400 rounded">
+              {succesMessage}
             </div>
           )}
           
