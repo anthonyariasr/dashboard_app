@@ -140,12 +140,19 @@ def generalView(userId: int, db: Session = Depends(get_db)):
         ).scalar() or 0
 
     # Todos los exercises del día o último registro
-    exercises = db.query(Exercise).filter(Exercise.user_id == userId).filter(
-        Exercise.date >= today, Exercise.date < today + timedelta(days=1)
+    exercises = db.query(Exercise).filter(
+        Exercise.user_id == userId,
+        Exercise.date >= today,
+        Exercise.date < today + timedelta(days=1)
     ).order_by(desc(Exercise.date)).all()
-    if not exercises:  # Si no hay ejercicios hoy, buscar el último conjunto de ejercicios
-        exercises = db.query(Exercise).filter(Exercise.user_id == userId).order_by(desc(Exercise.date)).all() or "No exercises available"
-
+    if not exercises:
+        exercises = db.query(Exercise).filter(
+            Exercise.user_id == userId
+        ).order_by(desc(Exercise.date)).all()
+    
+    # Verificar si hay ejercicios, de lo contrario devolver un mensaje informativo
+    if not exercises:
+        return {"message": "No exercises available"}
 
     # Preparar el resultado
     result = {
@@ -155,7 +162,7 @@ def generalView(userId: int, db: Session = Depends(get_db)):
         "body_fat_percentage": body_fat_percentage_value,
         "total_water_consumption": total_water_consumption,
         "total_daily_steps": total_daily_steps,
-        "exercises": exercises
+        "exercises": [ExerciseOut.from_orm(exercise) for exercise in exercises]
     }
 
     return result
