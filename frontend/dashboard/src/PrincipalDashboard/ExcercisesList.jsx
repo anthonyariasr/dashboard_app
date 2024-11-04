@@ -1,14 +1,23 @@
 import React from "react";
 
-export default function ExcercisesList(){
-    return(
+export default function ExcercisesList({ exercises }) {
+    // Asegurarse de que `exercises` sea un array
+    const validExercises = Array.isArray(exercises) ? exercises : [];
+
+    return (
         <div>
-            <h3>Excercises per day</h3>
-            <ul>
-                <li>Running : 50min</li>
-                <li>Yoga: 1h</li>
-                <li>Swiming: 30min</li>
-            </ul>
+            <h3>Exercises per day</h3>
+            {validExercises.length > 0 ? (
+                <ul>
+                    {validExercises.map((exercise, index) => (
+                        <li key={index}>
+                            {exercise.name}: {exercise.duration}
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <p>No exercises available</p>
+            )}
         </div>
     );
 }

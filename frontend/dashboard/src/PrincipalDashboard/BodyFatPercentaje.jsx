@@ -32,7 +32,7 @@ function GaugePointer() {
   );
 }
 
-export default function CompositionExample() {
+export default function CompositionExample({value}) {
   return (
     <div>
       <h3>Fat</h3>
@@ -41,7 +41,7 @@ export default function CompositionExample() {
       height={200}
       startAngle={-110}
       endAngle={110}
-      value={0}
+      value={value}
     >
       
       <GaugeReferenceArc />

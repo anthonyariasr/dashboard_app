@@ -1,6 +1,6 @@
 from fastapi import APIRouter, UploadFile, File, Depends, HTTPException
 from sqlalchemy.orm import Session
-from sqlalchemy import func, desc
+from sqlalchemy import func, desc, and_
 from models import Weight, WaterConsumption, Height, Exercise, DailyStep, BodyFatPercentage, BodyComposition
 from io import StringIO
 from starlette import status
@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from database import get_db
 from typing import Any
 import pandas as pd
+from schemas import ExerciseOut
 
 router = APIRouter(
     prefix="/data",
@@ -61,6 +62,15 @@ def add_sensor(type_sensor: str, userId: int, file: UploadFile = File(...), db: 
 
     # Recorrer cada fila y agregar al modelo
     for _, row in df.iterrows():
+        # Validar si ya existe una entrada con la misma fecha y hora exacta
+        existing_entry = db.query(model_class).filter(
+            and_(model_class.date == row["date"], model_class.user_id == userId)
+        ).first()
+
+        if existing_entry:
+            # Si existe un registro con la misma fecha y hora exacta, omitir o manejar según la lógica deseada
+            continue  # Saltar a la siguiente fila o puedes agregar lógica personalizada aquí
+
         data = {"date": row["date"], "user_id": userId}
         for field, field_type in field_types.items():
             try:
@@ -135,6 +145,7 @@ def generalView(userId: int, db: Session = Depends(get_db)):
     ).order_by(desc(Exercise.date)).all()
     if not exercises:  # Si no hay ejercicios hoy, buscar el último conjunto de ejercicios
         exercises = db.query(Exercise).filter(Exercise.user_id == userId).order_by(desc(Exercise.date)).all() or "No exercises available"
+
 
     # Preparar el resultado
     result = {

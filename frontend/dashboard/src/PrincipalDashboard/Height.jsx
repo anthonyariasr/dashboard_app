@@ -1,15 +1,7 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 
-export default function Height(){
-    const [height, setheight] = useState('');
-
-    useEffect(() => {
-        // Obtén el nombre de usuario del localStorage
-        const storedHeight = localStorage.getItem('height');
-        if (storedHeight) {
-            setheight(storedHeight);
-        }
-    }, []);
+export default function Height({height}){
+    
     return(
         <div>
             <h3>Actual Height</h3>

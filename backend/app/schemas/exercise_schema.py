@@ -9,7 +9,6 @@ class ExerciseCreate(BaseModel):
 
 # Esquema para la respuesta de registros de ejercicio
 class ExerciseOut(BaseModel):
-    date: datetime
     exercise_name: str
     duration: float
 

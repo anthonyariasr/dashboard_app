@@ -2,11 +2,11 @@ import * as React from 'react';
 import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
 import './Dashborad.css';
 
-export default function ChartsOverviewDemo() {
+export default function ChartsOverviewDemo({values}) {
   const settings = {
     width: 200,
     height: 200,
-    value: 0,
+    value: values,
   };
   return (
     <div>
