@@ -11,7 +11,7 @@ export default function ExcercisesList({ exercises }) {
                 <ul>
                     {validExercises.map((exercise, index) => (
                         <li key={index}>
-                            {exercise.name}: {exercise.duration}
+                            {exercise.exercise_name}: {exercise.duration}
                         </li>
                     ))}
                 </ul>
