@@ -24,7 +24,8 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const userId = 1; // Reemplaza esto con el ID real del usuario
+                const userId = localStorage.getItem("id");
+                console.log(userId)
                 const response = await axios.get(`http://127.0.0.1:8000/data/generalView?userId=${userId}`);
                 setData(response.data);
             } catch (error) {
@@ -42,7 +43,12 @@ const Dashboard = () => {
                 <Water values={data.total_water_consumption} />
                 <Weight weight={data.weight} />
                 <Height height={data.height} />
-                <CorporalComposition weight={data.weight} fat={data.body_composition.fat} muscle={data.body_composition.muscle} water={data.body_composition.water} />
+                <CorporalComposition 
+                    weight={data.weight} 
+                    fat={data.body_composition?.fat || "N/A"} 
+                    muscle={data.body_composition?.muscle || "N/A"} 
+                    water={data.body_composition?.water || "N/A"} 
+                />
                 <BodyFatPercentaje value={parseInt(data.body_fat_percentage)} />
                 <Steps value={data.total_daily_steps} />
                 <ExcercisesList exercises={data.exercises} />

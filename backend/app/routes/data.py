@@ -150,9 +150,7 @@ def generalView(userId: int, db: Session = Depends(get_db)):
             Exercise.user_id == userId
         ).order_by(desc(Exercise.date)).all()
     
-    # Verificar si hay ejercicios, de lo contrario devolver un mensaje informativo
-    if not exercises:
-        return {"message": "No exercises available"}
+    
 
     # Preparar el resultado
     result = {
