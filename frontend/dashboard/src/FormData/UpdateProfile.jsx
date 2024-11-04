@@ -9,6 +9,8 @@ export default function UpdateUserForm() {
         birthday: "",
         gender: ""
     });
+    const [errorMessage, setErrorMessage] = useState(""); // Estado para mensaje de error
+    const [succesMessage, setSuccessMessage] = useState(""); //Estado para éxito
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -29,14 +31,15 @@ export default function UpdateUserForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+        setErrorMessage(""); // Limpiar mensaje de error previo
+        setSuccessMessage("");
+
         const userId = localStorage.getItem("id");
         if (!userId) {
-            alert("No se encontró el ID de usuario en el local storage");
+            setErrorMessage("No se encontró el ID de usuario en el local storage");
             return;
         }
 
-        // Formatear la fecha de cumpleaños antes de enviarla si está presente
         const formattedData = {
             ...formData,
             birthday: formData.birthday ? formatDate(formData.birthday) : ""
@@ -60,10 +63,10 @@ export default function UpdateUserForm() {
 
             const data = await response.json();
             console.log("User updated successfully:", data);
-            alert("Perfil actualizado con éxito");
+            setSuccessMessage("Perfil actualizado con éxito");
         } catch (error) {
             console.error("Error:", error);
-            alert("Error al actualizar el perfil: " + error.message);
+            setErrorMessage("Error al actualizar el perfil: " + error.message);
         }
     };
 
@@ -73,6 +76,21 @@ export default function UpdateUserForm() {
             <div className='flex justify-center items-center min-h-screen w-[30%] ml-[20%]'>
                 <form className="p-8 border rounded-lg shadow-lg bg-white w-[100%]" onSubmit={handleSubmit}>
                     <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">Actualizar perfil</h2>
+
+                    {/* Mostrar mensaje de error si existe */}
+                    {errorMessage && (
+                        <div className="mb-4 p-3 bg-red-100 text-red-700 border border-red-400 rounded">
+                            {errorMessage}
+                        </div>
+                    )}
+
+                    {/* Mostrar mensaje de error si existe */}
+                    {succesMessage && (
+                        <div className="mb-4 p-3 bg-green-100 text-green-700 border border-green-400 rounded">
+                            {succesMessage}
+                        </div>
+                    )}
+
 
                     <label className="block text-sm font-medium text-gray-600">Username</label>
                     <input 
