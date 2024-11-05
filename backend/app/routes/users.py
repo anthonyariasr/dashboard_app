@@ -101,7 +101,7 @@ def update_user(user_id: int, user_update: UserUpdate, db: Session = Depends(get
         user.username = user_update.username
     if user_update.password is not None:
         user.password = user_update.password
-    if user_update.birthday is not None:
+    if user_update.birthday not in (None, ""):
         # Convertir el string de 'birthday' a un objeto 'date' de Python con formato d-m-aaaa
         try:
             user.birthday = datetime.strptime(user_update.birthday, "%d-%m-%Y").date()  # Ajustado a d-m-aaaa
