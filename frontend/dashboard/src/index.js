@@ -10,45 +10,47 @@ import Dashboard from './PrincipalDashboard/Dashboard';
 import Sidebar from './SideBar/Sidebar';
 import FormData from './FormData/FormData';
 import UpdateProfile from './FormData/UpdateProfile';
+import HistoricalDataSection from './HistoricalData/HistoricalDataSection';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <App/>
-    ),
+    element: <App />,
   },
   {
     path: "RegisterForm",
-    element: <RegisterForm/>
+    element: <RegisterForm />,
   },
   {
     path: "LoginForm",
-    element: <LoginForm/>
+    element: <LoginForm />,
   },
   {
     path: "UserProfile",
-    element: <UserProfile/>
+    element: <UserProfile />,
   },
   {
     path: "Dashboard",
-    element: <Dashboard/>
+    element: <Dashboard />,
   },
   {
     path: "Sidebar",
-    element: <Sidebar/>
+    element: <Sidebar />,
   },
   {
     path: "FormData",
-    element: <FormData/>
+    element: <FormData />,
   },
   {
     path: "UpdateForm",
-    element: <UpdateProfile/>
-  }
-
-])
-
+    element: <UpdateProfile />,
+  },
+  {
+    path: "HistoricalDataSection",
+    element: <HistoricalDataSection />,
+  },
+  
+]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

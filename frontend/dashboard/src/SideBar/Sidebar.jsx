@@ -34,6 +34,11 @@ const Sidebar = ({ onUpdateProfile, onLogout }) => {
         navigate('/UpdateForm');
     };
 
+    // Nueva función para navegar a Histórico de Datos
+    const handleHistoricalData = () => {
+        navigate('/HistoricalDataSection');
+    };
+
     // Función para alternar el sidebar
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
@@ -81,6 +86,14 @@ const Sidebar = ({ onUpdateProfile, onLogout }) => {
                             className="w-full text-left py-2 px-4 hover:bg-gray-700 rounded-md"
                         >
                             Añadir datos
+                        </button>
+                    </li>
+                    <li>
+                        <button
+                            onClick={handleHistoricalData}
+                            className="w-full text-left py-2 px-4 hover:bg-gray-700 rounded-md"
+                        >
+                            Histórico de Datos
                         </button>
                     </li>
                     <li>
