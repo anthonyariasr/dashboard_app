@@ -37,6 +37,7 @@ csv_to_model_fields = {
     "body_composition": {"fat": "fat", "muscle": "muscle", "water": "water"}
 }
 
+#Ruta para añadir los archivos CSV
 @router.post("/add-sensor", response_model=Any)
 def add_sensor(type_sensor: str, userId: int, file: UploadFile = File(...), db: Session = Depends(get_db)):
     if type_sensor not in sensor_mapping:
@@ -53,7 +54,7 @@ def add_sensor(type_sensor: str, userId: int, file: UploadFile = File(...), db: 
         # Renombrar las columnas del DataFrame para que coincidan con los campos del modelo
         df = df.rename(columns=field_mappings)
 
-        # Convertir la columna de fecha y validar el formato
+        # Convertierte la columna de fecha y valida el formato
         df['date'] = pd.to_datetime(df['date'], format="%Y-%m-%d %H:%M:%S", errors='raise')
     except ValueError:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid date format. Use YYYY-MM-DD HH:MM:SS")
@@ -68,8 +69,8 @@ def add_sensor(type_sensor: str, userId: int, file: UploadFile = File(...), db: 
         ).first()
 
         if existing_entry:
-            # Si existe un registro con la misma fecha y hora exacta, omitir o manejar según la lógica deseada
-            continue  # Saltar a la siguiente fila o puedes agregar lógica personalizada aquí
+            # Falta la lógica para reemplazar datos 
+            continue  
 
         data = {"date": row["date"], "user_id": userId}
         for field, field_type in field_types.items():
@@ -84,24 +85,25 @@ def add_sensor(type_sensor: str, userId: int, file: UploadFile = File(...), db: 
     db.commit()
     return {"status": "Data successfully added"}
 
+#Ruta para obtener los datos del día actual
 @router.get("/generalView", response_model=Any)
 def generalView(userId: int, db: Session = Depends(get_db)):
     #fecha de hoy
     today = datetime.now().date()
 
-    # weight
+    # weight del día o último registro
     weight = db.query(Weight).filter(Weight.user_id == userId).filter(
         Weight.date >= today, Weight.date < today + timedelta(days=1)
     ).order_by(desc(Weight.date)).first() or db.query(Weight).filter(Weight.user_id == userId).order_by(desc(Weight.date)).first()
     weight_value = weight.weight if weight else "No data"
 
-    # height
+    # height del día o último registro
     height = db.query(Height).filter(Height.user_id == userId).filter(
         Height.date >= today, Height.date < today + timedelta(days=1)
     ).order_by(desc(Height.date)).first() or db.query(Height).filter(Height.user_id == userId).order_by(desc(Height.date)).first()
     height_value = height.height if height else "No data"
 
-    #BodyComposition
+    #BodyComposition del día o último registro
     body_composition = db.query(BodyComposition).filter(BodyComposition.user_id == userId).filter(
         BodyComposition.date >= today, BodyComposition.date < today + timedelta(days=1)
     ).order_by(desc(BodyComposition.date)).first() or db.query(BodyComposition).filter(BodyComposition.user_id == userId).order_by(desc(BodyComposition.date)).first()
@@ -111,7 +113,7 @@ def generalView(userId: int, db: Session = Depends(get_db)):
         "water": body_composition.water if body_composition else "0%"
     }
 
-    #BodyFatPercentage
+    #BodyFatPercentage del día o último registro
     body_fat_percentage = db.query(BodyFatPercentage).filter(BodyFatPercentage.user_id == userId).filter(
         BodyFatPercentage.date >= today, BodyFatPercentage.date < today + timedelta(days=1)
     ).order_by(desc(BodyFatPercentage.date)).first() or db.query(BodyFatPercentage).filter(BodyFatPercentage.user_id == userId).order_by(desc(BodyFatPercentage.date)).first()
@@ -188,7 +190,7 @@ def get_historical_data(
     else:
         raise HTTPException(status_code=400, detail="Invalid time_period provided")
 
-    # Obtener el promedio, máximo y mínimo de weight en el período de tiempo
+    # Promedio, máximo y mínimo de weight en el período de tiempo
     weight = db.query(func.avg(Weight.weight).label("average_weight"), func.min(Weight.weight).label("min_weight"), func.max(Weight.weight).label("max_weight")).filter(
         Weight.user_id == userId,
         Weight.date >= start_date,
@@ -200,7 +202,7 @@ def get_historical_data(
         "max": weight.max_weight or "No data"
     }
 
-    # Obtener el promedio, máximo y mínimo de height en el período de tiempo
+    # Promedio, máximo y mínimo de height en el período de tiempo
     height = db.query(func.avg(Height.height).label("average_height"), func.min(Height.height).label("min_height"), func.max(Height.height).label("max_height")).filter(
         Height.user_id == userId,
         Height.date >= start_date,
@@ -212,7 +214,7 @@ def get_historical_data(
         "max": height.max_height or "No data"
     }
 
-    # Promedio de BodyComposition (fat, muscle, water) en el período de tiempo
+    # Promedio de BodyComposition en el período de tiempo
     body_composition = db.query(
         func.avg(BodyComposition.fat).label("average_fat"),
         func.avg(BodyComposition.muscle).label("average_muscle"),
@@ -266,7 +268,7 @@ def get_historical_data(
         } for exercise in exercises
     ]
 
-    # Preparar el resultado
+    # Resultado de los datos 
     result = {
         "weight": weight_data,
         "height": height_data,
