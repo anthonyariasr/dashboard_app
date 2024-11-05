@@ -37,7 +37,7 @@ function UploadSensorData() {
         throw new Error(`Error: ${response.statusText}`);
       }
 
-      const result = await response.json();
+      
       setSuccessMessage('Archivo subido con éxito')
     } catch (error) {
       console.error('Error al subir el archivo:', error);
@@ -48,7 +48,7 @@ function UploadSensorData() {
   return (
     <div style={{display:'flex'}} className='bg-gray-100'>
       <Sidebar/>
-      <div className='flex justify-center items-center min-h-screen' style={{ marginLeft: '25%' }}>
+      <div className='flex justify-center items-center min-h-screen' style={{ marginLeft: '40%' }}>
         <form onSubmit={handleSubmit} className="max-w-md w-full p-8 border rounded-lg shadow-lg bg-white">
           <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">Ingresar datos de sensores</h2>
           

@@ -79,7 +79,7 @@ export default function UpdateUserForm() {
     return (
         <div className="bg-gray-100 w-full items-center flex ">
             <Sidebar />
-            <div className='flex justify-center items-center min-h-screen w-[30%] ml-[20%]'>
+            <div className='flex justify-center items-center min-h-screen w-[30%] ml-[40%]'>
                 <form className="p-8 border rounded-lg shadow-lg bg-white w-[100%]" onSubmit={handleSubmit}>
                     <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">Actualizar perfil</h2>
 
@@ -97,6 +97,7 @@ export default function UpdateUserForm() {
                         </div>
                     )}
 
+                    
 
                     <label className="block text-sm font-medium text-gray-600">Username</label>
                     <input 

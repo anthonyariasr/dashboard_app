@@ -290,7 +290,7 @@ function HistoricalDataSection() {
     return (
         <div className="bg-gray-100 w-full flex">
     <Sidebar />
-    <div className="flex-grow p-6 bg-gray-100 rounded-lg shadow-md">  {/* Agregado flex-grow aquí */}
+    <div className="flex-grow p-6 bg-gray-100 rounded-lg shadow-md ml-[16.5%]">  {/* Agregado flex-grow aquí */}
         <h2 className="text-3xl font-bold mb-4 text-center">Histórico de Datos</h2>
         <label htmlFor="timeRange" className="block mb-2 text-lg">Selecciona el período:</label>
         <select 

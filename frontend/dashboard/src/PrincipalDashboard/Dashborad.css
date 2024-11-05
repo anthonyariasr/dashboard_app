@@ -2,12 +2,12 @@
 .dashboard {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
+  gap: 30px;
   padding: 20px;
   background-color: #f4f4f4; /* Fondo claro */
   margin-left: 250px;
   float: right;
-  width: calc(100% - 250px); /* Ajuste para la columna de navegación */
+  width: calc(100% - 10px); /* Ajuste para la columna de navegación */
 }
 
 .dashboard > div {
@@ -16,6 +16,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
   text-align: center;
+  height: 330px;
 }
 
 h3 {
