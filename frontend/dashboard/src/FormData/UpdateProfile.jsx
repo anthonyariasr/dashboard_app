@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Sidebar from "../SideBar/Sidebar";
 
 export default function UpdateUserForm() {
+    
     const [formData, setFormData] = useState({
         username: "",
         email: "",
@@ -153,6 +154,7 @@ export default function UpdateUserForm() {
                     </button>
                 </form>
             </div>
+            <script src="https://unpkg.com/flowbite@latest/dist/flowbite.js"></script>
         </div>
     );
 }

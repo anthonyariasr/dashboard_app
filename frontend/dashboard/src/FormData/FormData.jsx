@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Sidebar from '../SideBar/Sidebar';
 
 function UploadSensorData() {
+  
   const [file, setFile] = useState(null);
   const [typeSensor, setTypeSensor] = useState('');
   const [userId, setUserId] = useState('');

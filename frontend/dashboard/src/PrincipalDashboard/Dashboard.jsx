@@ -11,6 +11,7 @@ import ExcercisesList from "./ExcercisesList";
 import './Dashborad.css';
 
 const Dashboard = () => {
+    
     const [data, setData] = useState({
         weight: "Loading...",
         height: "Loading...",

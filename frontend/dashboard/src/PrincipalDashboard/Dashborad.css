@@ -1,43 +1,84 @@
-
-
 /* Dashboard.css */
-
 .dashboard {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-    padding: 20px;
-    background-color: #f4f4f4; /* Fondo claro */
-    margin-left: 0px;
-    float: right;
-    width: 100%;
-  }
-  
-  .dashboard > div {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    text-align: center;
-  }
-  
-  h3 {
-    font-size: 1.5em;
-    color: #333; /* Títulos oscuros */
-  }
-  
-  p, li {
-    font-size: 1.2em;
-    color: #666; /* Texto más claro */
-  }
-  
-  /* Estilo específico para los gráficos */
-  .gauge {
-    margin: 10px 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  background-color: #f4f4f4; /* Fondo claro */
+  margin-left: 250px;
+  float: right;
+  width: calc(100% - 250px); /* Ajuste para la columna de navegación */
+}
+
+.dashboard > div {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+}
+
+h3 {
+  font-size: 1.5em;
+  color: #333; /* Títulos oscuros */
+}
+
+p, li {
+  font-size: 1.2em;
+  color: #666; /* Texto más claro */
+}
+
+/* Estilo específico para los gráficos */
+.gauge {
+  margin: 10px 0;
+}
+
+.css-1w10rh9-MuiGauge-container {
+  margin-left: 40px;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+  .dashboard {
+      margin-left: 0;
+      width: 100%;
+      float: none;
+      padding: 10px;
   }
 
-  .css-1w10rh9-MuiGauge-container{
-    margin-left: 40px;
+  h3 {
+      font-size: 1.3em;
   }
-  
-  
+
+  p, li {
+      font-size: 1em;
+  }
+
+  .css-1w10rh9-MuiGauge-container {
+      margin-left: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard {
+      grid-template-columns: 1fr;
+      padding: 5px;
+      gap: 10px;
+  }
+
+  .dashboard > div {
+      padding: 10px;
+  }
+
+  h3 {
+      font-size: 1.1em;
+  }
+
+  p, li {
+      font-size: 0.9em;
+  }
+
+  .css-1w10rh9-MuiGauge-container {
+      margin-left: 10px;
+  }
+}
