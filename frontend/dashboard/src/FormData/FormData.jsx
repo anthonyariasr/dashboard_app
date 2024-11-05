@@ -68,7 +68,7 @@ function UploadSensorData() {
           
           <label className="block text-sm font-medium text-gray-600">Tipo de sensor</label>
           <select value={typeSensor} onChange={(e) => setTypeSensor(e.target.value)} className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <option value="">Selecciona tipo de sensor</option>
+            <option value="" disabled>Selecciona tipo de sensor</option>
             <option value="weight">Peso</option>
             <option value="water_consumption">Consumo de Agua</option>
             <option value="height">Altura</option>
