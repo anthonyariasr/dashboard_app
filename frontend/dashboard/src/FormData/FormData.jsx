@@ -5,7 +5,6 @@ function UploadSensorData() {
   
   const [file, setFile] = useState(null);
   const [typeSensor, setTypeSensor] = useState('');
-  const [userId, setUserId] = useState('');
   const [errorMessage, setErrorMessage] = useState(''); // Nuevo estado para el mensaje de error
   const [succesMessage, setSuccessMessage] = useState(''); //Nuevo estado para el mensaje de succcess
 
@@ -17,13 +16,15 @@ function UploadSensorData() {
     event.preventDefault();
     setErrorMessage(''); // Limpiar mensaje de error previo
 
-    if (!file || !typeSensor || !userId) {
+    if (!file || !typeSensor) {
       setErrorMessage('Por favor completa todos los campos y selecciona un archivo.');
       return;
     }
 
     const formData = new FormData();
     formData.append('file', file);
+
+    const userId = localStorage.getItem("id");
 
     try {
       const url = `http://127.0.0.1:8000/data/add-sensor?type_sensor=${encodeURIComponent(typeSensor)}&userId=${encodeURIComponent(userId)}`;
@@ -79,15 +80,6 @@ function UploadSensorData() {
           </select>
           <br />
           
-          <label className="block text-sm font-medium text-gray-600">ID de Usuario:</label>
-          <input
-            type="number"
-            value={userId}
-            onChange={(e) => setUserId(e.target.value)}
-            required
-            className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <br />
           
           <label className="block text-sm font-medium text-gray-600">Subir Archivo CSV:</label>
           <input

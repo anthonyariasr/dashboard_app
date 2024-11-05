@@ -48,6 +48,7 @@ export default function CompositionExample({value}) {
       <GaugeValueArc />
       <GaugePointer />
     </GaugeContainer>
+    <p>{value}</p>
     </div>
   );
 }
