@@ -17,12 +17,12 @@ function UserProfile() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Aquí puedes manejar la lógica para actualizar los datos del perfil
+        
         console.log('Profile data submitted:', formData);
     };
 
     const handleLogout = () => {
-        // Aquí puedes manejar la lógica para cerrar sesión
+        
         console.log('User logged out');
     };
 

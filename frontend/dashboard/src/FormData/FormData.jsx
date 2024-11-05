@@ -7,7 +7,7 @@ function UploadSensorData() {
   const [typeSensor, setTypeSensor] = useState('');
   const [userId, setUserId] = useState('');
   const [errorMessage, setErrorMessage] = useState(''); // Nuevo estado para el mensaje de error
-  const [succesMessage, setSuccessMessage] = useState('');
+  const [succesMessage, setSuccessMessage] = useState(''); //Nuevo estado para el mensaje de succcess
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
@@ -59,7 +59,7 @@ function UploadSensorData() {
             </div>
           )}
 
-          {/* Mostrar mensaje de error si existe */}
+          {/* Mostrar mensaje de éxito si existe */}
           {succesMessage && (
             <div className="mb-4 p-3 bg-green-100 text-green-700 border border-green-400 rounded">
               {succesMessage}

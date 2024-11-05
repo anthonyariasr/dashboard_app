@@ -32,8 +32,8 @@ export default function UpdateUserForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setErrorMessage(""); // Limpiar mensaje de error previo
-        setSuccessMessage("");
+        setErrorMessage(""); // Limpiar mensaje de error anterior
+        setSuccessMessage(""); //Limpiar mensaje de éxito anterior
 
         const userId = localStorage.getItem("id");
         if (!userId) {
@@ -90,7 +90,7 @@ export default function UpdateUserForm() {
                         </div>
                     )}
 
-                    {/* Mostrar mensaje de error si existe */}
+                    {/* Mostrar mensaje de éxito si existe */}
                     {succesMessage && (
                         <div className="mb-4 p-3 bg-green-100 text-green-700 border border-green-400 rounded">
                             {succesMessage}

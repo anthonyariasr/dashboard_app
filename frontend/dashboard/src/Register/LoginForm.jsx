@@ -15,19 +15,13 @@ function LoginForm() {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:8000/auth/login', formData);
-            const userName = formData.username; // O puedes obtenerlo del response si viene del backend
-            const weight = response.data.weight; // Obtiene el peso del response
-            const height = response.data.height; // Obtiene la altura del response
+            const userName = formData.username; 
             const id = response.data.userId
-            console.log(weight);
-            console.log(height);
             console.log(id)
             
             
             localStorage.setItem('userName', userName); // Guarda el nombre de usuario en localStorage
             localStorage.setItem('access_token', response.data.access_token); // Guarda el token
-            localStorage.setItem('weight', weight); // Guarda el peso
-            localStorage.setItem('height', height); // Guarda la altura
             localStorage.setItem('id', id ); //Guarda el id
     
             navigate('/Dashboard');
