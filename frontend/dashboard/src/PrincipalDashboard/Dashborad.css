@@ -1,85 +1,66 @@
-/* Dashboard.css */
+/* Ajustes generales de las tarjetas */
 .dashboard {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Ajuste para columnas más pequeñas */
+  gap: 20px;
   padding: 20px;
-  background-color: #f4f4f4; /* Fondo claro */
+  background-color: #f4f9fc;
   margin-left: 250px;
-  float: right;
-  width: calc(100% - 10px); /* Ajuste para la columna de navegación */
+  width: calc(100% - 250px);
+  border-radius: 15px;
 }
 
-.dashboard > div {
-  background-color: white;
-  border-radius: 8px;
+/* Ajustes específicos para las tarjetas de Weight y Height */
+.Weight,
+.Height {
+  grid-column: span 1; /* Ocupan menos espacio */
+  min-width: 200px; /* Tamaño mínimo reducido */
+  max-width: 250px; /* Limitar el tamaño máximo */
+}
+
+/* Otras tarjetas */
+.Water {
+  grid-column: span 2; /* Ocupa más espacio horizontal */
+}
+
+.CorporalComposition,
+.BodyFatPercentaje,
+.Steps,
+.ExcercisesList {
+  grid-column: span 2; /* Mantener un tamaño consistente */
+}
+
+/* Hover y diseño consistente */
+.card {
+  background-color: #ffffff;
+  border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  text-align: center;
-  height: 330px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
-h3 {
-  font-size: 1.5em;
-  color: #333; /* Títulos oscuros */
+svg{
+  justify-content: center !important;
 }
 
-p, li {
-  font-size: 1.2em;
-  color: #666; /* Texto más claro */
+.css-b9rdri-MuiGauge-referenceArc {
+  fill: #67a0ae !important;
 }
 
-/* Estilo específico para los gráficos */
-.gauge {
-  margin: 10px 0;
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
 }
 
-.css-1w10rh9-MuiGauge-container {
-  margin-left: 40px;
+.percentage {
+  font-size: 18px;
+  margin-top: 10px;
+  font-weight: bold;
 }
 
-/* Ajustes responsivos */
-@media (max-width: 768px) {
-  .dashboard {
-      margin-left: 0;
-      width: 100%;
-      float: none;
-      padding: 10px;
-  }
-
-  h3 {
-      font-size: 1.3em;
-  }
-
-  p, li {
-      font-size: 1em;
-  }
-
-  .css-1w10rh9-MuiGauge-container {
-      margin-left: 20px;
-  }
-}
-
-@media (max-width: 480px) {
-  .dashboard {
-      grid-template-columns: 1fr;
-      padding: 5px;
-      gap: 10px;
-  }
-
-  .dashboard > div {
-      padding: 10px;
-  }
-
-  h3 {
-      font-size: 1.1em;
-  }
-
-  p, li {
-      font-size: 0.9em;
-  }
-
-  .css-1w10rh9-MuiGauge-container {
-      margin-left: 10px;
-  }
-}

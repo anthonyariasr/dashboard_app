@@ -150,7 +150,7 @@ export default function UpdateUserForm() {
                         </select>
                     </div>
 
-                    <button type="submit" className="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition duration-200">
+                    <button type="submit" className="w-full text-white p-3 rounded-lg  transition duration-200" style={{backgroundColor: '#67a0ae'}}>
                         Actualizar
                     </button>
                 </form>

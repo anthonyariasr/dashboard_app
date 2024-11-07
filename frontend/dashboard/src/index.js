@@ -11,6 +11,8 @@ import Sidebar from './SideBar/Sidebar';
 import FormData from './FormData/FormData';
 import UpdateProfile from './FormData/UpdateProfile';
 import HistoricalDataSection from './HistoricalData/HistoricalDataSection';
+import Principal from './Principal';
+import PrincipalLogin from './PrincipalLogin';
 
 const router = createBrowserRouter([
   {
@@ -49,6 +51,14 @@ const router = createBrowserRouter([
     path: "HistoricalDataSection",
     element: <HistoricalDataSection />,
   },
+  {
+    path: "Principal",
+    element: <Principal/>
+  },
+  {
+    path: "PrincipalLogin",
+    element: <PrincipalLogin/>
+  }
   
 ]);
 

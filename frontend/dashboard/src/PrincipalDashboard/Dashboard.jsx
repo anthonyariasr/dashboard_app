@@ -41,18 +41,32 @@ const Dashboard = () => {
         <div style={{ display: 'flex' }}>
             <Sidebar />
             <div className="dashboard">
-                <Water values={data.total_water_consumption} />
-                <Weight weight={data.weight} />
-                <Height height={data.height} />
+                <div className="Weight card">
+                    <Weight weight={data.weight} className="Weight"/>
+                </div>
+                <div className="Height card">
+                    <Height height={data.height} className="Height"/>
+                </div>
+                <div className="Water card">
+                    <Water values={data.total_water_consumption}/>
+                </div>
+                <div className="CorporalComposition card">
                 <CorporalComposition 
                     weight={data.weight} 
                     fat={data.body_composition?.fat || "N/A"} 
                     muscle={data.body_composition?.muscle || "N/A"} 
                     water={data.body_composition?.water || "N/A"} 
-                />
-                <BodyFatPercentaje value={parseInt(data.body_fat_percentage)} />
-                <Steps value={data.total_daily_steps} />
-                <ExcercisesList exercises={data.exercises} />
+                    className="CorporalComposition"/>
+                </div>
+                <div className="BodyFatPercentaje card">
+                <BodyFatPercentaje value={parseInt(data.body_fat_percentage)} className="BodyFatPercentage"/>
+                </div>
+                <div className="Steps card">
+                <Steps value={data.total_daily_steps} className="Steps"/>
+                </div>
+                <div className="ExcercisesList card">
+                <ExcercisesList exercises={data.exercises} className="ExercisesList"/>
+                </div>
             </div>
         </div>
     );

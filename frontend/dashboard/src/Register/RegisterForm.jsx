@@ -81,58 +81,62 @@ function RegisterForm() {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-100">
-            <form onSubmit={handleSubmit} className="max-w-md w-full p-8 border rounded-lg shadow-lg bg-white">
+        <div className="justify-center items-center mt-[30px] sm:ml-[10px] flex">
+            <form onSubmit={handleSubmit} className="max-w-md w-full p-8 border rounded-lg shadow-lg bg-white sm:ml-[10px]">
                 <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">Registro de Usuario</h2>
-                {['email', 'username', 'password', 'weight', 'height'].map((field) => (
-                    <div key={field} className="mb-4">
-                        <label htmlFor={field} className="block text-sm font-medium text-gray-600">
-                            {field.charAt(0).toUpperCase() + field.slice(1)}
+                    <div className="grid grid-cols-2 gap-4">
+                        {['email', 'username', 'password', 'weight', 'height'].map((field, index) => (
+                            <div key={field} className={`mb-4 ${index % 2 === 0 ? 'col-span-2 sm:col-span-1' : ''}`}>
+                                <label htmlFor={field} className="block text-sm font-medium text-gray-600">
+                                    {field.charAt(0).toUpperCase() + field.slice(1)}
+                                </label>
+                                <input
+                                    type={field === 'password' ? 'password' : 'text'}
+                                    name={field}
+                                    id={field}
+                                    value={formData[field]}
+                                    onChange={handleChange}
+                                    className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    required
+                                />
+                            </div>
+                        ))}
+                    </div>
+                    <div className="mb-4">
+                        <label htmlFor="birthday" className="block text-sm font-medium text-gray-600">
+                            Fecha de Nacimiento
                         </label>
                         <input
-                            type={field === 'password' ? 'password' : 'text'}
-                            name={field}
-                            id={field}
-                            value={formData[field]}
+                            type="date"
+                            name="birthday"
+                            id="birthday"
+                            value={formData.birthday}
                             onChange={handleChange}
                             className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                         />
                     </div>
-                ))}
-                <div className="mb-4">
-                    <label htmlFor="birthday" className="block text-sm font-medium text-gray-600">
-                        Fecha de Nacimiento
-                    </label>
-                    <input
-                        type="date"
-                        name="birthday"
-                        id="birthday"
-                        value={formData.birthday}
-                        onChange={handleChange}
-                        className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    />
-                </div>
-                <div className="mb-4">
+                    <div className="mb-4">
                     <label htmlFor="gender" className="block text-sm font-medium text-gray-600">Género</label>
-                    <select
-                        name="gender"
-                        id="gender"
-                        value={formData.gender}
-                        onChange={handleChange}
-                        className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    >
-                        <option value="">Selecciona tu género</option>
-                        <option value="male">Masculino</option>
-                        <option value="female">Femenino</option>
-                    </select>
-                </div>
-                <button type="submit" className="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition duration-200">Registrarse</button>
-                <p className="text-center text-sm text-gray-600 mt-4">
-                    ¿Ya tienes una cuenta? <Link to="/LoginForm" className="text-blue-500 hover:underline">Iniciar sesión</Link>
-                </p>
+                        <select
+                            name="gender"
+                            id="gender"
+                            value={formData.gender}
+                            onChange={handleChange}
+                            className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required
+                        >
+                            <option value="">Selecciona tu género</option>
+                            <option value="male">Masculino</option>
+                            <option value="female">Femenino</option>
+                        </select>
+                    </div>
+                    <button type="submit" className="w-full text-white p-3 rounded-lg hover:bg-blue-600 transition duration-200" style={{backgroundColor: '#67a0ae'}}>
+                        Registrarse
+                    </button>
+                    <p className="text-center text-sm text-gray-600 mt-4">
+                    ¿Ya tienes una cuenta? <Link to="/PrincipalLogin" className=" hover:underline" style={{color: '#67a0ae'}}>Iniciar sesión</Link>
+                    </p>
             </form>
         </div>
     );

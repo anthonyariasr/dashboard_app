@@ -1,17 +1,19 @@
 import React from "react";
+import { BarChart } from '@mui/x-charts/BarChart';
 
 export default function CorporalComposition({weight, fat, muscle, water}){
 
 
     return(
-        <div>
-            <h3>Actual Corporal Composition</h3>
-            <ul>
-                <li>Total Weight: {weight} kg</li>
-                <li>Proportion of fat: {fat} </li>
-                <li>Muscle: {muscle}</li>
-                <li>Water: {water}</li>
-            </ul>
+        <div className="">
+            <h3 style={{justifyContent: 'center', textAlign: 'center'}}>Composición corporal</h3>
+             <BarChart
+                xAxis={[{ scaleType: 'band', data: ['Fat', 'Muscle', 'Water'] }]}
+                series={[{ data: [fat, muscle, water] }]}
+                width={500}
+                height={300}
+                barLabel="value"
+    />
         </div>
     );
 }

@@ -1,116 +1,82 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { FaUserCircle } from 'react-icons/fa';
+import Sidebar from '../SideBar/Sidebar';
+import axios from 'axios';
 
-
-function UserProfile() {
-    const [formData, setFormData] = useState({
+const UserProfile = () => {
+    
+    const userId = localStorage.getItem('id');
+    const [data, setData] = useState({
+        id: '',
         email: '',
         username: '',
-        password: '',
-        birthDate: '',
-        gender: '',
-    });
-
-
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+        birthday: '',
+        gender: ''
+    })
+    
+    useEffect(()=>{
+        const fetchData = async ()=>{
+            try{
+                const response = await axios.get(`http://127.0.0.1:8000/users/${userId}`)
+                console.log(response)
+                setData(response.data);
+            }catch(error){
+                console.error("Error fetching data:", error);
+            }
         
-        console.log('Profile data submitted:', formData);
-    };
-
-    const handleLogout = () => {
-        
-        console.log('User logged out');
-    };
+        }
+        fetchData();
+    }, []);
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-100">
-            <form onSubmit={handleSubmit} className="max-w-md w-full p-8 border rounded-lg shadow-lg bg-white">
-                <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">Perfil de Usuario</h2>
-             
-                <div className="mb-4">
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-600">Correo electrónico</label>
-                    <input
-                        type="email"
-                        name="email"
-                        id="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    />
+        <div className="flex">
+            <Sidebar />
+            <div className="flex flex-col bg-white p-6 rounded-lg border border-gray-300 ml-[300px] mt-[20px]  w-[70%] max-w-none">
+                
+                {/* Línea de color y Título */}
+                <div className="border-b-4 mb-4" style={{ borderColor: '#76c7c0' }}>
+                    <h2 className="text-2xl font-semibold text-gray-800 pt-2">Información Personal</h2>
                 </div>
-                <div className="mb-4">
-                    <label htmlFor="username" className="block text-sm font-medium text-gray-600">Nombre de usuario</label>
-                    <input
-                        type="text"
-                        name="username"
-                        id="username"
-                        value={formData.username}
-                        onChange={handleChange}
-                        className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    />
+
+                {/* Contenido principal */}
+                <div className="flex items-start mt-4">
+                    
+                    {/* Ícono de Usuario */}
+                    <FaUserCircle style={{ color: '#76c7c0' }} className="text-9xl mr-8" />
+
+                    {/* Información del Usuario */}
+                    <div className="space-y-4 text-gray-700">
+                        <div className="flex">
+                            <span className="font-medium w-24">Nombre:</span>
+                            <span className='ml-1'>{data.username}</span>
+                        </div>
+                        <div className="flex">
+                            <span className="font-medium w-24">Email:</span>
+                            <span className='ml-1'>{data.email}</span>
+                        </div>
+                        <div className="flex">
+                            <span className="font-medium w-24">Cumpleaños:  </span>
+                            <span className='ml-2'> {data.birthday}</span>
+                        </div>
+                        <div className="flex">
+                            <span className="font-medium w-24">Género:</span>
+                            <span className='ml-1'>{data.gender}</span>
+                        </div>
+                    </div>
+                        <br />
+                    <div className='ml-[3%]'>
+                    <button
+                            type="submit"
+                            className=" text-white p-3 rounded-lg hover:bg-blue-600 transition duration-200 mt-[200%] "
+                            style={{backgroundColor: '#67a0ae'}}
+                        >
+                        Actualizar Perfil
+                        </button>
+                    </div>
                 </div>
-                <div className="mb-4">
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-600">Contraseña</label>
-                    <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="birthDate" className="block text-sm font-medium text-gray-600">Fecha de nacimiento</label>
-                    <input
-                        type="date"
-                        name="birthDate"
-                        id="birthDate"
-                        value={formData.birthDate}
-                        onChange={handleChange}
-                        className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="gender" className="block text-sm font-medium text-gray-600">Género</label>
-                    <select
-                        name="gender"
-                        id="gender"
-                        value={formData.gender}
-                        onChange={handleChange}
-                        className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    >
-                        <option value="" disabled >Seleccione</option>
-                        <option value="male">Masculino</option>
-                        <option value="female">Femenino</option>
-                     
-                    </select>
-                </div>
-                <button
-                    type="submit"
-                    className="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition duration-200 mb-4"
-                >
-                    Actualizar Perfil
-                </button>
-                <button
-                    type="button"
-                    onClick={handleLogout}
-                    className="w-full bg-red-500 text-white p-3 rounded-lg hover:bg-red-600 transition duration-200"
-                >
-                    Cerrar Sesión
-                </button>
-            </form>
+            </div>
         </div>
     );
-}
+};
 
 export default UserProfile;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 function LoginForm() {
     const navigate = useNavigate();
@@ -34,8 +34,8 @@ function LoginForm() {
     
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-100">
-            <form onSubmit={handleSubmit} className="max-w-md w-full p-8 border rounded-lg shadow-lg bg-white">
+        <div className="flex justify-center items-center ml-[100px]">
+            <form onSubmit={handleSubmit} className="  p-8 border rounded-lg shadow-lg bg-white w-[400px]">
                 <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">Iniciar Sesión</h2>
                 {error && <p className="text-red-500 mb-4">{error}</p>}
                 <div className="mb-4">
@@ -64,10 +64,14 @@ function LoginForm() {
                 </div>
                 <button
                     type="submit"
-                    className="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition duration-200"
+                    className="w-full text-white p-3 rounded-lg transition duration-200"
+                    style={{backgroundColor: '#67a0ae'}}
                 >
                     Iniciar Sesión
                 </button>
+                <p className="text-center text-sm text-gray-600 mt-4">
+                    ¿No tienes una cuenta? <Link to="/Principal" className=" hover:underline" style={{color: '#67a0ae'}}>Registrate</Link>
+                </p>
             </form>
         </div>
     );
