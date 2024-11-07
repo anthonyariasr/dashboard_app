@@ -207,8 +207,6 @@ def get_historical_data(
     # Peso
     weight_query = db.query(
         func.avg(Weight.weight).label("average_weight"),
-        func.min(Weight.weight).label("min_weight"),
-        func.max(Weight.weight).label("max_weight"),
         Weight.date
     ).filter(
         Weight.user_id == userId,
@@ -219,18 +217,14 @@ def get_historical_data(
     weight_data_serialized = [
         {
             "average_weight": w.average_weight or 0,
-            "min_weight": w.min_weight or 0,
-            "max_weight": w.max_weight or 0,
-            "date": w.date.date()  # Convierte a solo fecha
+            "date": w.date.date()  # Obtiene solo la fecha
         }
         for w in weight_data
-    ] or [{"average_weight": 0, "min_weight": 0, "max_weight": 0, "date": None}]
+    ] or [{"average_weight": 0, "date": None}]
 
     # Altura
     height_query = db.query(
         func.avg(Height.height).label("average_height"),
-        func.min(Height.height).label("min_height"),
-        func.max(Height.height).label("max_height"),
         Height.date
     ).filter(
         Height.user_id == userId,
@@ -241,12 +235,10 @@ def get_historical_data(
     height_data_serialized = [
         {
             "average_height": h.average_height or 0,
-            "min_height": h.min_height or 0,
-            "max_height": h.max_height or 0,
-            "date": h.date.date()  # Convierte a solo fecha
+            "date": h.date.date()  # Obtiene solo la fecha
         }
         for h in height_data
-    ] or [{"average_height": 0, "min_height": 0, "max_height": 0, "date": None}]
+    ] or [{"average_height": 0, "date": None}]
 
     # Composición Corporal
     body_composition_query = db.query(
