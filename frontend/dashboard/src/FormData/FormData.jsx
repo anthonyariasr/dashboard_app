@@ -5,8 +5,8 @@ function UploadSensorData() {
   
   const [file, setFile] = useState(null);
   const [typeSensor, setTypeSensor] = useState('');
-  const [errorMessage, setErrorMessage] = useState(''); // Nuevo estado para el mensaje de error
-  const [succesMessage, setSuccessMessage] = useState(''); //Nuevo estado para el mensaje de succcess
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
@@ -14,7 +14,8 @@ function UploadSensorData() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setErrorMessage(''); // Limpiar mensaje de error previo
+    setErrorMessage('');
+    setSuccessMessage('');
 
     if (!file || !typeSensor) {
       setErrorMessage('Por favor completa todos los campos y selecciona un archivo.');
@@ -38,8 +39,7 @@ function UploadSensorData() {
         throw new Error(`Error: ${response.statusText}`);
       }
 
-      
-      setSuccessMessage('Archivo subido con éxito')
+      setSuccessMessage('Archivo subido con éxito');
     } catch (error) {
       console.error('Error al subir el archivo:', error);
       setErrorMessage('Error al subir el archivo. Verifica el formato e inténtalo nuevamente.');
@@ -47,28 +47,30 @@ function UploadSensorData() {
   };
 
   return (
-    <div style={{display:'flex'}} className='bg-gray-100'>
-      <Sidebar/>
-      <div className='flex justify-center items-center min-h-screen' style={{ marginLeft: '40%' }}>
-        <form onSubmit={handleSubmit} className="max-w-md w-full p-8 border rounded-lg shadow-lg bg-white">
-          <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">Ingresar datos de sensores</h2>
+    <div className="flex flex-col sm:flex-row bg-gray-100 min-h-screen">
+      <Sidebar />
+      <div className="flex flex-col justify-center items-center w-full sm:w-3/4 p-4 sm:p-8" style={{ marginLeft: 'auto' }}>
+        <form onSubmit={handleSubmit} className="w-full max-w-md p-6 border rounded-lg shadow-lg bg-white">
+          <h2 className="text-xl sm:text-2xl font-bold text-center text-gray-700 mb-6">Ingresar datos de sensores</h2>
           
-          {/* Mostrar mensaje de error si existe */}
           {errorMessage && (
             <div className="mb-4 p-3 bg-red-100 text-red-700 border border-red-400 rounded">
               {errorMessage}
             </div>
           )}
 
-          {/* Mostrar mensaje de éxito si existe */}
-          {succesMessage && (
+          {successMessage && (
             <div className="mb-4 p-3 bg-green-100 text-green-700 border border-green-400 rounded">
-              {succesMessage}
+              {successMessage}
             </div>
           )}
           
           <label className="block text-sm font-medium text-gray-600">Tipo de sensor</label>
-          <select value={typeSensor} onChange={(e) => setTypeSensor(e.target.value)} className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <select 
+            value={typeSensor} 
+            onChange={(e) => setTypeSensor(e.target.value)} 
+            className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
             <option value="" disabled>Selecciona tipo de sensor</option>
             <option value="weight">Peso</option>
             <option value="water_consumption">Consumo de Agua</option>
@@ -80,7 +82,6 @@ function UploadSensorData() {
           </select>
           <br />
           
-          
           <label className="block text-sm font-medium text-gray-600">Subir Archivo CSV:</label>
           <input
             type="file"
@@ -91,7 +92,12 @@ function UploadSensorData() {
           />
           <br />
           
-          <button type="submit" className="w-full  text-white p-3 rounded-lg  transition duration-200" style={{backgroundColor: '#67a0ae'}}>Subir</button>
+          <button 
+            type="submit" 
+            className="w-full text-white p-3 rounded-lg transition duration-200 bg-blue-600 hover:bg-blue-700 focus:outline-none"
+          >
+            Subir
+          </button>
         </form>
       </div>
     </div>

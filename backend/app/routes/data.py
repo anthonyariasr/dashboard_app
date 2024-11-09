@@ -38,7 +38,6 @@ csv_to_model_fields = {
     "body_composition": {"fat": "fat", "muscle": "muscle", "water": "water"}
 }
 
-#Ruta para añadir los archivos CSV
 @router.post("/add-sensor", response_model=Any)
 def add_sensor(type_sensor: str, userId: int, file: UploadFile = File(...), db: Session = Depends(get_db)):
     if type_sensor not in sensor_mapping:
@@ -55,7 +54,7 @@ def add_sensor(type_sensor: str, userId: int, file: UploadFile = File(...), db: 
         # Renombrar las columnas del DataFrame para que coincidan con los campos del modelo
         df = df.rename(columns=field_mappings)
 
-        # Convertierte la columna de fecha y valida el formato
+        # Convierte la columna de fecha y valida el formato
         df['date'] = pd.to_datetime(df['date'], format="%Y-%m-%d %H:%M:%S", errors='raise')
     except ValueError:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid date format. Use YYYY-MM-DD HH:MM:SS")
@@ -70,41 +69,47 @@ def add_sensor(type_sensor: str, userId: int, file: UploadFile = File(...), db: 
         ).first()
 
         if existing_entry:
-            # Falta la lógica para reemplazar datos 
-            continue  
-
-        data = {"date": row["date"], "user_id": userId}
-        for field, field_type in field_types.items():
-            try:
-                data[field] = field_type(row[field])
-            except KeyError:
-                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Missing data for {field}")
-        
-        data_entry = model_class(**data)
-        db.add(data_entry)
+            # Actualizar el registro existente con los nuevos valores
+            for field, field_type in field_types.items():
+                try:
+                    setattr(existing_entry, field, field_type(row[field]))
+                except KeyError:
+                    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Missing data for {field}")
+            db.add(existing_entry)  # Agregar el registro modificado para actualizarlo
+        else:
+            # Crear una nueva entrada si no existe
+            data = {"date": row["date"], "user_id": userId}
+            for field, field_type in field_types.items():
+                try:
+                    data[field] = field_type(row[field])
+                except KeyError:
+                    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Missing data for {field}")
+            
+            data_entry = model_class(**data)
+            db.add(data_entry)
 
     db.commit()
-    return {"status": "Data successfully added"}
+    return {"status": "¡Datos añadidos exitosamente!"}
 
-#Ruta para obtener los datos del día actual
+# Ruta para obtener los datos del día actual
 @router.get("/generalView", response_model=Any)
 def generalView(userId: int, db: Session = Depends(get_db)):
-    #fecha de hoy
+    # Fecha de hoy
     today = datetime.now().date()
 
     # weight del día o último registro
     weight = db.query(Weight).filter(Weight.user_id == userId).filter(
         Weight.date >= today, Weight.date < today + timedelta(days=1)
     ).order_by(desc(Weight.date)).first() or db.query(Weight).filter(Weight.user_id == userId).order_by(desc(Weight.date)).first()
-    weight_value = weight.weight if weight else "No data"
+    weight_value = weight.weight if weight else "No hay datos"
 
     # height del día o último registro
     height = db.query(Height).filter(Height.user_id == userId).filter(
         Height.date >= today, Height.date < today + timedelta(days=1)
     ).order_by(desc(Height.date)).first() or db.query(Height).filter(Height.user_id == userId).order_by(desc(Height.date)).first()
-    height_value = height.height if height else "No data"
+    height_value = height.height if height else "No hay datos"
 
-    #BodyComposition del día o último registro
+    # BodyComposition del día o último registro
     body_composition = db.query(BodyComposition).filter(BodyComposition.user_id == userId).filter(
         BodyComposition.date >= today, BodyComposition.date < today + timedelta(days=1)
     ).order_by(desc(BodyComposition.date)).first() or db.query(BodyComposition).filter(BodyComposition.user_id == userId).order_by(desc(BodyComposition.date)).first()
@@ -114,7 +119,7 @@ def generalView(userId: int, db: Session = Depends(get_db)):
         "water": body_composition.water if body_composition else "0%"
     }
 
-    #BodyFatPercentage del día o último registro
+    # BodyFatPercentage del día o último registro
     body_fat_percentage = db.query(BodyFatPercentage).filter(BodyFatPercentage.user_id == userId).filter(
         BodyFatPercentage.date >= today, BodyFatPercentage.date < today + timedelta(days=1)
     ).order_by(desc(BodyFatPercentage.date)).first() or db.query(BodyFatPercentage).filter(BodyFatPercentage.user_id == userId).order_by(desc(BodyFatPercentage.date)).first()
@@ -142,18 +147,15 @@ def generalView(userId: int, db: Session = Depends(get_db)):
             DailyStep.user_id == userId
         ).scalar() or 0
 
-    # Todos los exercises del día o último registro
-    exercises = db.query(Exercise).filter(
+    # Último ejercicio del día o último registro
+    exercise = db.query(Exercise).filter(
         Exercise.user_id == userId,
         Exercise.date >= today,
         Exercise.date < today + timedelta(days=1)
-    ).order_by(desc(Exercise.date)).all()
-    if not exercises:
-        exercises = db.query(Exercise).filter(
-            Exercise.user_id == userId
-        ).order_by(desc(Exercise.date)).all()
-    
-    
+    ).order_by(desc(Exercise.date)).first() or db.query(Exercise).filter(
+        Exercise.user_id == userId
+    ).order_by(desc(Exercise.date)).first()
+    exercises = [ExerciseOut.from_orm(exercise)] if exercise else []
 
     # Resultado
     result = {
@@ -163,7 +165,7 @@ def generalView(userId: int, db: Session = Depends(get_db)):
         "body_fat_percentage": body_fat_percentage_value,
         "total_water_consumption": total_water_consumption,
         "total_daily_steps": total_daily_steps,
-        "exercises": [ExerciseOut.from_orm(exercise) for exercise in exercises]
+        "exercises": exercises
     }
 
     return result
