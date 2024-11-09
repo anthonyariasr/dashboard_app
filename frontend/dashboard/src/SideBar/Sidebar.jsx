@@ -25,10 +25,6 @@ const Sidebar = () => {
         navigate('/PrincipalLogin');
     };
 
-    const handleForm = () => {
-        navigate('/FormData');
-    };
-
     const handleDashboard = () => {
         navigate('/Dashboard');
     };
@@ -46,7 +42,7 @@ const Sidebar = () => {
     };
 
     const handleFileUpload = () => {
-        navigate('/FileUpload');
+        navigate('/FormData');
     };
 
     return (
@@ -167,7 +163,7 @@ const Sidebar = () => {
                         <li>
                             <button
                                 className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-                                onClick={handleForm}
+                                onClick={handleFileUpload}
                             >
                                 <svg
                                     aria-hidden="true"

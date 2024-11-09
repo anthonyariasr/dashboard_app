@@ -62,14 +62,12 @@ export default function UpdateUserForm() {
             }
 
             const data = await response.json();
-            console.log("User updated successfully:", data);
             const userName = data.username;
             localStorage.setItem('userName', userName);
             setSuccessMessage("Perfil actualizado con éxito");
 
             window.location.reload();
         } catch (error) {
-            console.error("Error:", error);
             setErrorMessage("Error al actualizar el perfil: " + error.message);
         }
     };
@@ -77,9 +75,9 @@ export default function UpdateUserForm() {
     return (
         <div className="flex flex-col sm:flex-row bg-gray-100 min-h-screen">
             <Sidebar />
-            <div className="flex flex-col justify-center items-center w-full sm:w-3/4 p-4 sm:p-8">
-                <form className="w-full max-w-md p-6 border rounded-lg shadow-lg bg-white" onSubmit={handleSubmit}>
-                    <h2 className="text-xl sm:text-2xl font-bold text-center text-gray-700 mb-6">Actualizar perfil</h2>
+            <div className="flex flex-col items-center w-full sm:w-3/4 p-4 sm:p-8">
+                <form className="w-full max-w-lg p-6 border rounded-lg shadow-lg bg-white">
+                    <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">Actualizar perfil</h2>
 
                     {errorMessage && (
                         <div className="mb-4 p-3 bg-red-100 text-red-700 border border-red-400 rounded">
@@ -93,60 +91,71 @@ export default function UpdateUserForm() {
                         </div>
                     )}
 
-                    <label className="block text-sm font-medium text-gray-600">Username</label>
-                    <input 
-                        type="text" 
-                        name="username"
-                        value={formData.username}
-                        onChange={handleChange}
-                        className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="col-span-1">
+                            <label className="block text-sm font-medium text-gray-600">Username</label>
+                            <input 
+                                type="text" 
+                                name="username"
+                                value={formData.username}
+                                onChange={handleChange}
+                                className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
 
-                    <label className="block text-sm font-medium text-gray-600">Email</label>
-                    <input 
-                        type="text" 
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
+                        <div className="col-span-1">
+                            <label className="block text-sm font-medium text-gray-600">Email</label>
+                            <input 
+                                type="email" 
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
 
-                    <label className="block text-sm font-medium text-gray-600">Password</label>
-                    <input 
-                        type="password" 
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
+                        <div className="col-span-1">
+                            <label className="block text-sm font-medium text-gray-600">Password</label>
+                            <input 
+                                type="password" 
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
 
-                    <label className="block text-sm font-medium text-gray-600">Birthday</label>
-                    <input 
-                        type="date" 
-                        name="birthday"
-                        value={formData.birthday}
-                        onChange={handleChange}
-                        className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
+                        <div className="col-span-1">
+                            <label className="block text-sm font-medium text-gray-600">Birthday</label>
+                            <input 
+                                type="date" 
+                                name="birthday"
+                                value={formData.birthday}
+                                onChange={handleChange}
+                                className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
 
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-600">Gender</label>
-                        <select
-                            name="gender"
-                            value={formData.gender}
-                            onChange={handleChange}
-                            className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
-                        >
-                            <option value="">Selecciona tu género</option>
-                            <option value="male">Masculino</option>
-                            <option value="female">Femenino</option>
-                        </select>
+                        <div className="col-span-2">
+                            <label className="block text-sm font-medium text-gray-600">Gender</label>
+                            <select
+                                name="gender"
+                                value={formData.gender}
+                                onChange={handleChange}
+                                className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required
+                            >
+                                <option value="">Selecciona tu género</option>
+                                <option value="male">Masculino</option>
+                                <option value="female">Femenino</option>
+                            </select>
+                        </div>
                     </div>
 
                     <button 
                         type="submit" 
-                        className="w-full text-white p-3 rounded-lg bg-blue-600 hover:bg-blue-700 transition duration-200 focus:outline-none"
+                        className="w-full mt-6 text-white p-3 rounded-lg bg-blue-600 hover:bg-blue-700 transition duration-200 focus:outline-none"
+                        onClick={handleSubmit}
                     >
                         Actualizar
                     </button>
