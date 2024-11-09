@@ -16,8 +16,8 @@ function ChartDisplay({ type, chartData }) {
     };
 
     return (
-        <div className="w-full h-72 sm:h-96 p-4 bg-white rounded-lg shadow-lg">
-            <h3 className="text-lg sm:text-xl font-semibold mb-2">{chartTitle[type]}</h3>
+        <div className="w-full h-72 sm:h-96 p-6 bg-white rounded-xl shadow-lg transition duration-300 transform hover:scale-105">
+            <h3 className="text-xl sm:text-2xl font-semibold mb-4 text-gray-700">{chartTitle[type]}</h3>
             <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={type === 'exercises' ? null : chartData}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -27,9 +27,9 @@ function ChartDisplay({ type, chartData }) {
                     <Legend />
                     {type === 'body_composition' ? (
                         <>
-                            <Line type="monotone" dataKey="fat" name="Grasa Corporal (%)" stroke="#FF0000" />
-                            <Line type="monotone" dataKey="muscle" name="Músculo (%)" stroke="#00FF00" />
-                            <Line type="monotone" dataKey="water" name="Agua (%)" stroke="#0000FF" />
+                            <Line type="monotone" dataKey="fat" name="Grasa Corporal (%)" stroke="#FF6361" />
+                            <Line type="monotone" dataKey="muscle" name="Músculo (%)" stroke="#FFA600" />
+                            <Line type="monotone" dataKey="water" name="Agua (%)" stroke="#003f5c" />
                         </>
                     ) : type === 'exercises' ? (
                         Object.keys(chartData).map((exerciseName, index) => (
@@ -39,8 +39,8 @@ function ChartDisplay({ type, chartData }) {
                                 data={chartData[exerciseName]} 
                                 dataKey="total_duration" 
                                 name={exerciseName} 
-                                stroke={`hsl(${index * 60}, 70%, 50%)`} // Diferentes colores para cada ejercicio
-                                connectNulls={true} // Conecta puntos faltantes en las líneas
+                                stroke={`hsl(${index * 60}, 70%, 50%)`} 
+                                connectNulls={true} 
                                 activeDot={{ r: 8 }} 
                             />
                         ))
@@ -87,7 +87,6 @@ function HistoricalDataSection() {
 
                 const rawData = response.data;
 
-                // Formateo de datos para cada tipo
                 const formattedData = {
                     weight: rawData.weight.map(entry => ({ date: entry.date, value: entry.average_weight })),
                     height: rawData.height.map(entry => ({ date: entry.date, value: entry.average_height })),
@@ -128,14 +127,15 @@ function HistoricalDataSection() {
     return (
         <div className="bg-gray-100 w-full flex flex-col sm:flex-row">
             <Sidebar />
-            <div className="flex-grow p-4 sm:p-6 bg-gray-100 rounded-lg shadow-md sm:ml-[16.5%]">
-                <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-center">Histórico de Datos</h2>
-                <label htmlFor="timeRange" className="block mb-2 text-md sm:text-lg">Selecciona el período:</label>
+            <div className="flex-grow p-6 sm:p-8 bg-white rounded-lg shadow-md sm:ml-[16.5%]">
+                <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center text-gray-800">Histórico de Datos</h2>
+                
+                <label htmlFor="timeRange" className="block mb-2 text-md sm:text-lg font-medium text-gray-700">Selecciona el período:</label>
                 <select 
                     id="timeRange" 
                     value={selectedTimeframe} 
                     onChange={handleTimeframeChange} 
-                    className="mb-4 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-400 w-full sm:w-auto"
+                    className="mb-6 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 w-full sm:w-auto transition"
                 >
                     <option value="1w">1 semana</option>
                     <option value="1m">1 mes</option>
@@ -145,12 +145,16 @@ function HistoricalDataSection() {
                 </select>
 
                 <Tabs>
-                    <TabList className="flex flex-wrap space-x-4 mb-4 border-b-2 border-gray-300">
+                    <TabList className="flex flex-wrap gap-2 sm:gap-4 mb-6 border-b-2 border-gray-300">
                         {['weight', 'height', 'body_composition', 'body_fat_percentage', 'total_water_consumption', 'total_daily_steps', 'exercises'].map((type) => (
                             <Tab 
                                 key={type} 
                                 onClick={() => handleDataChange(type)} 
-                                className={`py-2 px-4 cursor-pointer rounded-md ${selectedData === type ? 'border-b-2 border-blue-500 font-semibold text-blue-500' : 'text-gray-600 hover:text-blue-500'}`}
+                                className={`py-2 px-4 cursor-pointer rounded-md transition duration-200 ${
+                                    selectedData === type 
+                                    ? 'border-b-4 border-blue-500 font-semibold text-blue-500 bg-blue-100'
+                                    : 'text-gray-600 hover:text-blue-500 hover:bg-gray-200'
+                                }`}
                             >
                                 {type.charAt(0).toUpperCase() + type.slice(1).replace(/_/g, ' ')}
                             </Tab>
@@ -158,7 +162,7 @@ function HistoricalDataSection() {
                     </TabList>
 
                     {['weight', 'height', 'body_composition', 'body_fat_percentage', 'total_water_consumption', 'total_daily_steps', 'exercises'].map((type) => (
-                        <TabPanel key={type}>
+                        <TabPanel key={type} className="transition-opacity duration-300 ease-in-out">
                             {type === selectedData && <ChartDisplay type={type} chartData={type === 'exercises' ? data.exercises : data[type]} />}
                         </TabPanel>
                     ))}
