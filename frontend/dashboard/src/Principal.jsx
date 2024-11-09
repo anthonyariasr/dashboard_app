@@ -4,14 +4,8 @@ import RegisterForm from "./Register/RegisterForm";
 
 export default function Principal (){
     return(
-        <div className="background mt-0 flex">
-            <br />
-            <br />
-            <br />
-            <img src={logo} alt="" className="ml-[200px] mb-[80px]"/>
-            <div className="register">
+        <div className="mt-0 flex justify-center items-center min-h-screen overflow-auto">
             <RegisterForm/>
-            </div>
         </div>
     )
 }

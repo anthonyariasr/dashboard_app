@@ -81,10 +81,10 @@ function RegisterForm() {
     };
 
     return (
-        <div className="justify-center items-center mt-[30px] sm:ml-[10px] flex">
-            <form onSubmit={handleSubmit} className="max-w-md w-full p-8 border rounded-lg shadow-lg bg-white sm:ml-[10px]">
+        <div className="justify-center items-center flex h-full">
+            <form onSubmit={handleSubmit} className="p-8 my-8 border-none rounded-lg shadow-2xl bg-white md:w-[400px]">
                 <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">Registro de Usuario</h2>
-                    <div className="grid grid-cols-2 gap-4">
+                        <div className="flex flex-col">
                         {['email', 'username', 'password', 'weight', 'height'].map((field, index) => (
                             <div key={field} className={`mb-4 ${index % 2 === 0 ? 'col-span-2 sm:col-span-1' : ''}`}>
                                 <label htmlFor={field} className="block text-sm font-medium text-gray-600">
@@ -131,11 +131,11 @@ function RegisterForm() {
                             <option value="female">Femenino</option>
                         </select>
                     </div>
-                    <button type="submit" className="w-full text-white p-3 rounded-lg hover:bg-blue-600 transition duration-200" style={{backgroundColor: '#67a0ae'}}>
+                    <button type="submit" className="w-full text-white p-3 rounded-lg transition duration-200 bg-[#67a0ae] hover:bg-[#4a737d]">
                         Registrarse
                     </button>
                     <p className="text-center text-sm text-gray-600 mt-4">
-                    ¿Ya tienes una cuenta? <Link to="/PrincipalLogin" className=" hover:underline" style={{color: '#67a0ae'}}>Iniciar sesión</Link>
+                    ¿Ya tienes una cuenta? <Link to="/PrincipalLogin" className=" hover:underline text-[#67a0ae]">Iniciar sesión</Link>
                     </p>
             </form>
         </div>

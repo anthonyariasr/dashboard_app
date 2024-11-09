@@ -34,8 +34,8 @@ function LoginForm() {
     
 
     return (
-        <div className="flex justify-center items-center ml-[100px]">
-            <form onSubmit={handleSubmit} className="  p-8 border rounded-lg shadow-lg bg-white w-[400px]">
+        <div className="flex justify-center items-center">
+            <form onSubmit={handleSubmit} className="p-8 border-none rounded-lg shadow-2xl bg-white md:w-[400px]">
                 <h2 className="text-2xl font-bold text-center text-gray-700 mb-6">Iniciar Sesión</h2>
                 {error && <p className="text-red-500 mb-4">{error}</p>}
                 <div className="mb-4">
@@ -64,13 +64,12 @@ function LoginForm() {
                 </div>
                 <button
                     type="submit"
-                    className="w-full text-white p-3 rounded-lg transition duration-200"
-                    style={{backgroundColor: '#67a0ae'}}
+                    className="w-full text-white p-3 rounded-lg transition duration-200 bg-[#67a0ae] hover:bg-[#4a737d]"
                 >
                     Iniciar Sesión
                 </button>
                 <p className="text-center text-sm text-gray-600 mt-4">
-                    ¿No tienes una cuenta? <Link to="/Principal" className=" hover:underline" style={{color: '#67a0ae'}}>Registrate</Link>
+                        ¿No tienes una cuenta? <Link to="/Principal" className=" hover:underline text-[#67a0ae]">Registrate</Link>
                 </p>
             </form>
         </div>
