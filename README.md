@@ -25,25 +25,32 @@ Asegúrate de tener instalados:
   python -m venv venv
 
 3.Activar el entorno virtual:
-
+  ```bash
   venv\Scripts\activate
 
 4.Instala las dependencias necesarias:
+
+```bash
   pip install "fastapi[standard]"
   pip install sqlalchemy pandas
 
 5.Inicia el servidor de FastAPI en modo de desarrollo:
+  ```bash
   fastapi dev .\app\app.py
 
 Despliegue del Frontend
 Navega al directorio del frontend y luego al subdirectorio dashboard:
+
+   ```bash
   cd frontend
   cd dashboard
 
 Instala las dependencias de Node.js:
+  ```bash
   npm install
 
 Inicia la aplicación de React en modo de desarrollo:
+  ```bash
   npm start
 
 
