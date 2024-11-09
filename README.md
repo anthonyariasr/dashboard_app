@@ -1,4 +1,11 @@
+# Integrantes
 
+- Sharon Tencio
+- Raschell Jarquín
+- Anthony Arias
+- Melany Jimenez 
+
+---
 # Proyecto de Dashboard - Instrucciones de Despliegue
 
 Este proyecto consta de un *frontend* y un *backend* para un sistema de Dashboard interactivo. Sigue las instrucciones a continuación para desplegar cada parte de la aplicación.
