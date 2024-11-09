@@ -49,7 +49,7 @@ Asegúrate de tener instalados:
 5. Inicia el servidor de FastAPI en modo de desarrollo:
 
    ```bash
-   uvicorn app.app:app --reload
+   fastapi dev .\app\app.py
    ```
 
 ---
