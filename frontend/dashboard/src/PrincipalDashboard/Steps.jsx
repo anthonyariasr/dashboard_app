@@ -9,15 +9,16 @@ export default function StepCounter({ value }) {
   const percentage = (normalizedSteps / maxSteps) * 100;
 
   return (
-    <div style={{ width: '100%', textAlign: 'center' }}>
+    <div className="w-full flex flex-col items-center justify-center">
       <h3>Pasos</h3>
-      <svg width="200" height="30" className='justify-center items-center' style={{textAlign: 'center', marginLeft: '180px'}}>
+      {/* Eliminar el estilo en línea y aplicar el centrado con Tailwind */}
+      <svg width="200" height="30" className="mt-2">
         {/* Fondo de la barra */}
-        <rect x="0" y="5" width="200" height="20" fill="#e0e0e0" rx="10"/>
+        <rect x="0" y="5" width="200" height="20" fill="#e0e0e0" rx="10" />
         {/* Barra de progreso */}
         <rect x="0" y="5" width={(percentage * 200) / 100} height="20" fill="#76c7c0" rx="10" />
       </svg>
-      <p>{normalizedSteps} / {maxSteps} pasos</p>
+      <p className="mt-2">{normalizedSteps} / {maxSteps} pasos</p>
     </div>
   );
 }
